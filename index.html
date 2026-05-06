@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>101 Pet Tricks – Dogs & Cats</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#0D1F12;color:#F2F7F2;min-height:100vh}
+#page-form{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;background:linear-gradient(160deg,#0A1A0E,#162A1A)}
+.logo{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;letter-spacing:0.4em;text-transform:uppercase;color:#D4A853;margin-bottom:28px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(36px,7vw,62px);font-weight:900;line-height:1.05;text-align:center;margin-bottom:10px;letter-spacing:-0.5px}
+h1 em{font-style:italic;color:#D4A853}
+.sub{font-size:15px;color:rgba(255,255,255,0.55);line-height:1.7;text-align:center;max-width:400px;margin:0 auto 32px}
+.pet-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;width:100%;max-width:440px}
+.pet-btn{padding:13px;border-radius:14px;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.6);font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.pet-btn.active{border-color:#D4A853;background:rgba(212,168,83,0.15);color:#D4A853}
+.form-box{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:22px;width:100%;max-width:440px;margin-bottom:14px;backdrop-filter:blur(10px)}
+.lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:0.08em}
+.inp{width:100%;padding:11px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);color:#F2F7F2;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:12px;transition:border-color 0.2s}
+.inp:focus{border-color:rgba(212,168,83,0.5)}
+.inp::placeholder{color:rgba(255,255,255,0.3)}
+select.inp option{background:#1A3020}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.get-btn{width:100%;max-width:440px;padding:15px;border-radius:100px;background:#D4A853;color:#0D1F12;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;margin-bottom:10px}
+.get-btn:hover{background:#E8C47A;transform:translateY(-2px)}
+.note{font-size:12px;color:rgba(255,255,255,0.35);text-align:center}
+
+#page-result{display:none;background:#EEE8DE;min-height:100vh;color:#2A1F15}
+
+/* RESULT HERO */
+.res-hero{background:linear-gradient(160deg,#1A3020 0%,#2C4A2A 60%,#3A5C30 100%);padding:44px 20px 36px;text-align:center;position:relative;overflow:hidden}
+.res-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:#F5EFE6;border-radius:40px 40px 0 0}
+.res-hero h2{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:#fff;margin-bottom:6px}
+.res-hero p{font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:22px}
+.res-stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.stat-box{background:rgba(255,255,255,0.1);border:1px solid rgba(212,168,83,0.35);border-radius:14px;padding:12px 20px;text-align:center}
+.stat-n{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#D4A853}
+.stat-l{font-size:10px;color:rgba(255,255,255,0.5);margin-top:2px;text-transform:uppercase;letter-spacing:0.08em}
+
+/* BODY */
+.res-body{max-width:700px;margin:0 auto;padding:28px 20px 40px;background:#EEE8DE}
+
+/* BREED BOX */
+.breed-box{background:linear-gradient(135deg,#FDF6EC,#F9EDD8);border:none;border-radius:20px;padding:22px 24px;margin-bottom:24px;box-shadow:0 4px 20px rgba(0,0,0,0.06);position:relative;overflow:hidden}
+.breed-box::before{content:'';position:absolute;top:0;left:0;width:5px;height:100%;background:linear-gradient(180deg,#D4A853,#C4622D)}
+.breed-box h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#1A3020;margin-bottom:8px}
+.breed-box p{font-size:13px;color:#5A4030;line-height:1.85}
+
+/* TRAINING TIP */
+.training-tip-box{background:#E8F0E4;border-left:4px solid #2E7D32;border-radius:0 12px 12px 0;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#1A3A1A;line-height:1.8}
+.training-tip-box strong{color:#1A3020}
+
+/* SECTION IMAGE BANNER */
+.sec-banner{border-radius:18px;overflow:hidden;height:140px;margin-bottom:14px;position:relative}
+.sec-banner img{width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.sec-banner-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(26,48,32,0.82),rgba(26,48,32,0.2))}
+.sec-banner-text{position:absolute;inset:0;display:flex;align-items:center;padding:0 22px;gap:12px}
+.sec-banner-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#fff}
+.sec-pill{padding:4px 14px;border-radius:100px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
+.p-beg{background:#E8F5E9;color:#1B5E20}
+.p-int{background:#FFF3E0;color:#BF360C}
+.p-adv{background:#FCE4EC;color:#880E4F}
+
+/* SECTION INTRO */
+.sec-intro{font-size:13px;color:#5A4030;background:#F5EFE3;border-radius:12px;padding:12px 16px;margin-bottom:12px;line-height:1.75;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+
+/* TRICKS */
+.trick{background:#FAF6F0;border:none;border-radius:14px;overflow:hidden;margin-bottom:8px;transition:all 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.trick:hover{box-shadow:0 6px 24px rgba(0,0,0,0.1);transform:translateY(-2px)}
+.trick-hdr{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer}
+.trick-num{width:30px;height:30px;border-radius:50%;background:#E8DFD0;border:1.5px solid #DDD0C0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#8B7355;flex-shrink:0}
+.trick-name{font-size:14px;font-weight:600;color:#2A1F15;flex:1}
+.trick-body{display:none;padding:0 16px 14px;background:#F5F0E8;border-top:1px solid #F0EAE0}
+.trick-how{font-size:13px;color:#3A2A18;line-height:1.9;margin-top:12px;margin-bottom:8px}
+.trick-step{display:flex;gap:8px;align-items:flex-start;margin-bottom:6px;font-size:13px;color:#3A2A18;line-height:1.6}
+.trick-step-num{width:20px;height:20px;border-radius:50%;background:#D4A853;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#1A3020;flex-shrink:0;margin-top:1px}
+.trick-tip{font-size:12px;color:#5A4030;background:linear-gradient(135deg,#F5EFE0,#EDE5CC);border:1px solid rgba(180,140,60,0.25);border-radius:10px;padding:10px 14px;line-height:1.7;margin-top:6px}
+.trick-tip strong{color:#C4822A}
+
+/* DOWNLOAD */
+.dl-box{background:linear-gradient(160deg,#1A3020,#2C4A2A);border-radius:20px;padding:30px;text-align:center;margin:28px 0;box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+.dl-box h3{font-family:'Playfair Display',serif;font-size:22px;color:#fff;margin-bottom:6px}
+.dl-box p{font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:20px;line-height:1.6}
+.dl-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:100px;background:#D4A853;color:#1A3020;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all 0.2s;margin-bottom:10px}
+.dl-btn:hover{background:#E8C47A;transform:translateY(-1px)}
+.restart{display:block;font-size:13px;color:rgba(255,255,255,0.4);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;margin:8px auto 0}
+.restart:hover{color:#D4A853}
+</style>
+</head>
+<body>
+
+<div id="page-form">
+  <div class="logo">NordicPlans</div>
+  <h1>101 Pet Tricks<br>for <em>Dogs & Cats</em></h1>
+  <p class="sub">Fill in your pet's details and get 101 personalized tricks – step by step.</p>
+
+  <div class="pet-btns">
+    <button class="pet-btn active" id="btn-dog">🐶 Dog</button>
+    <button class="pet-btn" id="btn-cat">🐱 Cat</button>
+  </div>
+
+  <div class="form-box">
+    <label class="lbl">Pet's name</label>
+    <input class="inp" type="text" id="f-name" placeholder="e.g. Max, Luna, Whiskers...">
+    <div class="grid2">
+      <div>
+        <label class="lbl" id="lbl-breed">Breed</label>
+        <input class="inp" type="text" id="f-breed" placeholder="e.g. Husky...">
+      </div>
+      <div>
+        <label class="lbl">Age</label>
+        <select class="inp" id="f-age">
+          <option value="puppy">Baby / Puppy</option>
+          <option value="young" selected>Young (6mo-2yr)</option>
+          <option value="adult">Adult (2-7yr)</option>
+          <option value="senior">Senior (7yr+)</option>
+        </select>
+      </div>
+    </div>
+    <label class="lbl">Energy level</label>
+    <select class="inp" id="f-energy">
+      <option value="low">😴 Low – calm & chill</option>
+      <option value="medium" selected>😊 Medium – playful</option>
+      <option value="high">⚡ High – very active</option>
+      <option value="extreme">🔥 Extreme – never stops!</option>
+    </select>
+    <label class="lbl">Training experience</label>
+    <select class="inp" id="f-exp">
+      <option value="beginner">🌱 Never trained before</option>
+      <option value="some" selected>📈 Knows some basics</option>
+      <option value="advanced">🎓 Knows lots of tricks</option>
+    </select>
+  </div>
+
+  <button class="get-btn" id="get-btn">Get my 101 tricks 🐾</button>
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
+    <span style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:#D4A853">$7.99</span>
+    <span style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6">One-time payment<br>No subscription</span>
+  </div>
+  <p class="note">Instant · Personalized · Download forever</p>
+</div>
+
+<div id="page-result">
+  <div class="res-hero">
+    <div style="font-size:48px;margin-bottom:12px">🎉</div>
+    <h2 id="res-title">101 tricks ready!</h2>
+    <p>Click any trick to see the full step-by-step guide</p>
+    <div class="res-stats">
+      <div class="stat-box"><div class="stat-n">40</div><div class="stat-l">Beginner</div></div>
+      <div class="stat-box"><div class="stat-n">35</div><div class="stat-l">Intermediate</div></div>
+      <div class="stat-box"><div class="stat-n">26</div><div class="stat-l">Advanced</div></div>
+    </div>
+  </div>
+  <div class="res-body">
+    <div class="breed-box">
+      <h3 id="breed-title">🐾 Your Pet's Tips</h3>
+      <p id="breed-tip"></p>
+    </div>
+    <div id="tricks-out"></div>
+    <div class="dl-box">
+      <div style="font-size:32px;margin-bottom:10px">🐾</div>
+      <h3>Save all 101 tricks</h3>
+      <p>Download your complete personalized guide and use it every training session</p>
+      <a id="dl-btn" class="dl-btn" href="#" download="101_Pet_Tricks.txt">⬇ Download my 101 tricks</a><br>
+      <button class="restart" onclick="restart()">← Make a new guide</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+var petType = 'dog';
+
+document.getElementById('btn-dog').addEventListener('click', function() {
+  petType = 'dog';
+  this.classList.add('active');
+  document.getElementById('btn-cat').classList.remove('active');
+  document.getElementById('lbl-breed').textContent = 'Breed';
+  document.getElementById('f-breed').placeholder = 'e.g. Husky, Labrador...';
+});
+
+document.getElementById('btn-cat').addEventListener('click', function() {
+  petType = 'cat';
+  this.classList.add('active');
+  document.getElementById('btn-dog').classList.remove('active');
+  document.getElementById('lbl-breed').textContent = 'Breed (optional)';
+  document.getElementById('f-breed').placeholder = 'e.g. Siamese, Maine Coon...';
+});
+
+// ALL 101 TRICKS DATABASE
+var DOG_TRICKS = {
+  beginner: [
+    {n:'Sit', how:'Hold treat above nose → Say "Sit" clearly → Wait for bottom to touch floor → Reward immediately', tip:'The foundation of all training. Practice 5 times daily for best results!'},
+    {n:'Stay', how:'Ask to sit → Open palm toward dog → Say "Stay" firmly → Step back one step → Return and reward', tip:'Start with just 2 seconds. Build up slowly – never rush this one!'},
+    {n:'Come', how:'Crouch down → Open arms wide → Say "Come!" excitedly → Huge reward when they arrive', tip:'NEVER punish a dog who comes to you. Always make it the best thing ever!'},
+    {n:'Shake hands', how:'Ask to sit → Hold treat in closed fist → Wait for dog to paw at fist → Open hand → Reward', tip:'Most dogs learn this within 2-3 short sessions!'},
+    {n:'Lie Down', how:'Ask to sit → Hold treat to nose → Slowly lower to floor → Say "Down" → Reward', tip:'Be patient – some dogs take a few days. Never push them down!'},
+    {n:'Watch me', how:'Hold treat between your eyes → Say "Watch me" → Reward eye contact → Gradually increase duration', tip:'Essential for training in distracting environments!'},
+    {n:'Leave it', how:'Place treat on floor → Cover with hand → Say "Leave it" → When dog backs away → Reward with DIFFERENT treat', tip:'Critical safety command. Practice with low-value items first!'},
+    {n:'Touch', how:'Hold palm out flat → Say "Touch" → When nose touches hand → Click and reward immediately', tip:'Great for building focus. Dogs love this interactive trick!'},
+    {n:'Off', how:'When dog jumps → Turn away completely → Say "Off" → When four paws on floor → Reward', tip:'Be consistent – everyone in the family must do the same!'},
+    {n:'Drop it', how:'Give toy → Say "Drop it" → Show treat → When toy drops → Reward → Return toy', tip:'Always give something back so they learn dropping = good things!'},
+    {n:'Wait', how:'At door → Say "Wait" → Open door slowly → If they move forward → Close door → Repeat until calm', tip:'This trick can save your dog\'s life at busy roads!'},
+    {n:'Heel', how:'Stand with dog on left → Say "Heel" → Walk forward → Reward when dog walks at your side', tip:'Short sessions of 2-3 minutes work best for this trick!'},
+    {n:'Sit pretty (beg)', how:'Ask to sit → Hold treat above nose → Wait for front paws to lift → Say "Sit pretty" → Reward', tip:'Builds core strength. Start with just 1 second!'},
+    {n:'Spin left', how:'Hold treat at nose → Move treat slowly to the left in a circle → Say "Spin" → Reward', tip:'Once mastered, teach spin right as a separate trick!'},
+    {n:'Spin right', how:'Hold treat at nose → Move treat slowly to the right in a circle → Say "Right" → Reward', tip:'Use different words for left and right to avoid confusion!'},
+    {n:'Paw (left)', how:'Ask to sit → Say "Paw" → Gently lift left paw → Reward → Repeat until dog lifts it alone', tip:'Most dogs naturally prefer one paw. Start with their favorite!'},
+    {n:'Paw (right)', how:'Ask to sit → Say "Other paw" → Gently lift right paw → Reward → Repeat', tip:'Teach after left paw is solid. Use a different cue word!'},
+    {n:'Fetch', how:'Show toy → Throw short distance → Excited voice "Fetch!" → Reward when returned → Gradually increase distance', tip:'Use their favorite toy for best results!'},
+    {n:'Bring it here', how:'Place toy nearby → Point to it → Say "Bring it" → Reward when carried to you', tip:'Start with short distances and gradually increase!'},
+    {n:'Go to your bed', how:'Point to bed → Lure with treat → Say "Bed" → Reward when on bed → Practice from further away', tip:'Make the bed a happy place with treats and praise!'},
+    {n:'Stand', how:'Ask to sit → Hold treat at nose height → Move forward slowly → Dog stands → Say "Stand" → Reward', tip:'Useful for vet visits and grooming!'},
+    {n:'Bow', how:'Hold treat under dog\'s chin → Move slowly to floor between front paws → Dog bows → Say "Bow" → Reward', tip:'Looks impressive and is surprisingly easy to teach!'},
+    {n:'Kisses', how:'Put small treat on cheek → Say "Kisses" → When dog licks → Reward → Gradually fade the treat', tip:'Adorable trick for photos and meeting new people!'},
+    {n:'Roll over (half)', how:'Ask to lie down → Hold treat at nose → Move slowly toward shoulder → Dog rolls to side → Reward', tip:'This is step one of the full roll over. Master this first!'},
+    {n:'Look away', how:'Hold treat in closed hand → When dog looks away in frustration → Mark and reward → Say "Look away"', tip:'Great impulse control exercise!'},
+    {n:'Go say hi', how:'Point to a person → Say "Go say hi" → Reward when dog approaches calmly', tip:'Perfect for introducing your dog to guests!'},
+    {n:'Sit from stand', how:'Dog standing → Say "Sit" → Reward → Practice from different positions', tip:'Builds on basic sit. Increases reliability!'},
+    {n:'Down from sit', how:'Dog sitting → Say "Down" → Reward → Practice until instant response', tip:'Speed comes with practice. Be patient!'},
+    {n:'Sit from down', how:'Dog lying down → Say "Sit" → Lure up with treat → Reward when sitting', tip:'Strengthens the sit command in new positions!'},
+    {n:'Walk nicely on leash', how:'Start walking → When dog pulls → Stop completely → Wait for loose leash → Continue → Reward frequently', tip:'Consistency is everything. Stop EVERY time they pull!'},
+    {n:'Name recognition', how:'Say dog\'s name once → When they look → Reward immediately → Practice in different locations', tip:'Use name only for positive things – never for scolding!'},
+    {n:'Find me', how:'Hide behind corner → Call "Find me!" → Big celebration when found → Move to harder spots', tip:'Great mental exercise. Dogs absolutely love this game!'},
+    {n:'Quiet', how:'When barking → Say "Quiet" calmly → Wait for 2 seconds of silence → Reward → Increase silence time', tip:'Never yell – it sounds like you\'re barking along!'},
+    {n:'Speak', how:'Find what makes dog bark (doorbell) → Say "Speak" → When bark → Reward → Fade the trigger', tip:'Teach "Quiet" first so you can control when they stop!'},
+    {n:'Settle', how:'On mat → Say "Settle" → Wait for relaxed position → Reward calmly → Gradually increase duration', tip:'Different from "down" – this means completely relax!'},
+    {n:'Chin rest', how:'Hold hand flat → Lure nose down → Dog rests chin in hand → Say "Chin" → Reward', tip:'Useful for grooming and vet exams. So cute too!'},
+    {n:'Back up', how:'Stand in front of dog → Walk slowly toward them → Say "Back" → When they step back → Reward', tip:'Start with just one step. Build up to five steps!'},
+    {n:'Side (walk beside)', how:'Hold treat at your left hip → Walk slowly → Reward dog for staying at your side', tip:'Foundation for formal heel work!'},
+    {n:'Catch', how:'Show treat → Drop it from low height → Say "Catch" → Reward even if missed → Gradually increase height', tip:'Some dogs are natural catchers – others need lots of practice!'},
+    {n:'Sniff it', how:'Hold object → Say "Sniff it" → Let dog smell → Reward → Use for scent games later', tip:'Activates their incredible nose – very enriching!'},
+  ],
+  intermediate: [
+    {n:'Roll over (full)', how:'Lie down → Hold treat at nose → Move toward shoulder → Continue circle → Dog rolls → Say "Roll over" → Reward', tip:'Break it into two halves if struggling. Patience is key!'},
+    {n:'Play dead', how:'Lie down → Say "Bang!" with finger gun → Lure onto side → Hold still 3 seconds → Reward', tip:'Use a dramatic voice – dogs love the theatrics!'},
+    {n:'Crawl', how:'Ask to lie down → Hold treat at nose height → Move forward slowly → Dog crawls → Say "Crawl" → Reward', tip:'Keep your hand low to prevent them from standing!'},
+    {n:'Weave through legs', how:'Stand with legs apart → Lure through with treat → Figure-8 pattern → Reward each pass → Say "Weave"', tip:'Start slow. Speed comes naturally with practice!'},
+    {n:'Jump through hoop', how:'Hold hoop at ground level → Lure through → Gradually raise hoop → Say "Hoop" → Reward', tip:'Never raise too fast. Build confidence gradually!'},
+    {n:'Jump over stick', how:'Hold stick at ankle height → Lure over → Say "Over" → Reward → Gradually raise height', tip:'Never jump higher than your dog\'s elbow!'},
+    {n:'Tidy up toys', how:'Point to toy → Lure to box → Wait for drop → Say "Tidy up" → Big reward → Repeat with all toys', tip:'Takes time but incredibly impressive trick!'},
+    {n:'Find the treat', how:'Show treat → Place under one of 3 cups → Say "Find it" → Let dog sniff and choose → Reward', tip:'Their nose is incredible. Start with 2 cups!'},
+    {n:'Scent discrimination', how:'Put scent on object → Mix with others → Say "Find it" → Reward when correct object chosen', tip:'Use the same object each time until reliable!'},
+    {n:'High five', how:'Ask for paw → Raise your hand higher → Say "High five" → Reward when paw hits raised hand', tip:'Build from basic shake. Most dogs get this quickly!'},
+    {n:'Wave goodbye', how:'Ask for high five → Move hand away before contact → Dog waves in air → Say "Wave" → Reward', tip:'Looks incredible to anyone watching!'},
+    {n:'Cross paws', how:'Ask to lie down → Gently place one paw over other → Say "Cross" → Reward → Practice until dog does alone', tip:'Takes patience but looks very sophisticated!'},
+    {n:'Leg weave (walking)', how:'Walk forward → Lure dog to weave between legs as you walk → Say "Weave" → Reward frequently', tip:'Start very slowly. Coordination comes with practice!'},
+    {n:'Carry object', how:'Teach "Hold" first → Then "Walk with me" → Dog carries object to destination → Huge reward', tip:'Use a light object to start – a newspaper works perfectly!'},
+    {n:'Ring a bell', how:'Hang bell at nose height → Lure nose to bell → Bell rings → Say "Bell" → Reward → Use for potty training!', tip:'Great way to let you know when they need to go outside!'},
+    {n:'Jump into arms', how:'Kneel down → Pat chest → Say "Up" → Reward when they jump into your arms → Gradually stand', tip:'Only for small/medium dogs. Build confidence slowly!'},
+    {n:'Skateboard', how:'Introduce board calmly → Treat for touching it → Paws on board → Push gently → Reward → Gradually increase distance', tip:'Takes 2-4 weeks but dogs absolutely love it!'},
+    {n:'Spin on the spot fast', how:'Lure in fast circle → Say "Spin fast" → Reward → Build speed gradually', tip:'High energy trick – perfect for energetic dogs!'},
+    {n:'Jump and spin', how:'Dog jumping → Add spin cue mid-jump → Reward → Combine into one fluid movement', tip:'Advanced version of the spin. Very impressive!'},
+    {n:'Back paw targeting', how:'Place target on floor → When back paw touches → Reward → Move target → Build to stepping on it', tip:'Dogs rarely focus on back paws – great brain workout!'},
+    {n:'Bow on cue', how:'Lure bow position → Add verbal cue "Take a bow" → Reward → Practice until reliable', tip:'Perfect trick to finish a performance!'},
+    {n:'Open door', how:'Tie rope to door handle → Teach to pull rope → Say "Open" → Reward → Practice with different doors', tip:'Very useful practical trick!'},
+    {n:'Close door', how:'Stick note on door → Teach to touch note → Door pushes shut → Say "Close" → Reward', tip:'Works on cupboards and regular doors!'},
+    {n:'Tug on cue', how:'Present tug toy → Say "Tug" → Let them tug → Say "Out" → Reward with tug again', tip:'Controlled tug is a great reward for many dogs!'},
+    {n:'Fetch specific item', how:'Name each toy separately → Practice retrieving by name → "Get the ball" vs "Get the rope"', tip:'Border Collies can learn 200+ toy names!'},
+    {n:'Figure 8 around legs', how:'Stand still → Lure between legs → Around left leg → Between again → Around right → Figure 8 → Reward', tip:'Beautiful flowing trick once mastered!'},
+    {n:'Jump over back', how:'Get on all fours → Lure dog to jump over your back → Say "Over" → Reward → Practice until reliable', tip:'Only for small/medium dogs with healthy joints!'},
+    {n:'Soccer', how:'Place ball → Tap with paw → Say "Kick" → When ball moves → Reward → Practice until pushing ball consistently', tip:'Border Collies and herding breeds love this trick!'},
+    {n:'Moonwalk', how:'Teach back up → Practice on different surfaces → Add hand signal → Say "Moonwalk" → Reward', tip:'Impressive party trick! Takes time to look smooth!'},
+    {n:'Limp', how:'Lift one front paw → Walk forward → Dog hops on three legs → Say "Limp" → Reward', tip:'Great acting trick. Very impressive to watch!'},
+    {n:'Heel on right side', how:'Move dog to right side → Say "Side" → Walk forward → Reward for staying close', tip:'Most dogs learn left side first. Right takes more practice!'},
+    {n:'Put toys away by name', how:'Name each toy → Place one out → Say "Put the ball away" → Dog fetches correct toy → Places in box → Reward', tip:'One of the most impressive tricks you can teach!'},
+    {n:'Balance treat on nose', how:'Ask to sit → Place treat on nose → Say "Wait" → Release "OK!" → Dog flips treat → Catches → Reward', tip:'Start with boring treats to reduce temptation!'},
+    {n:'Catch frisbee', how:'Roll frisbee on ground first → Short low tosses → Gradually increase height and distance → Reward every catch', tip:'Never throw too high with young dogs – protects their joints!'},
+    {n:'Recall with distractions', how:'Practice come with treats present → With other people around → At parks → Always huge reward → Never chase if they ignore', tip:'A reliable recall is the most important safety skill!'},
+  ],
+  advanced: [
+    {n:'Count', how:'Hold up fingers → Say "One" reward → "Two" → Two barks → "Three" → Three barks → Always reward correct number', tip:'Takes weeks but completely blows people\'s minds!'},
+    {n:'Piano', how:'Place paw on key → Key makes sound → Reward → Multiple keys → "Play piano" → Reward for any key touching', tip:'Great trick for musical households!'},
+    {n:'Basketball', how:'Teach to hold ball → Lower hoop progressively → Dog drops ball through hoop → Say "Shoot" → Reward', tip:'One of the most impressive tricks to teach!'},
+    {n:'Ring toss', how:'Teach to pick up ring → Guide toward post → Drop near post → Closer → On post → Say "Ring toss" → Reward', tip:'Break into tiny steps. Patience pays off enormously!'},
+    {n:'Play dead and stay', how:'Play dead → Walk away → Dog stays completely still → Return → Release → Reward', tip:'The ultimate impulse control challenge!'},
+    {n:'Back flip', how:'Teach standing on back legs → Jump backward → Reward the backward motion → Say "Flip" → Reward', tip:'Only for athletic dogs. Build slowly over months!'},
+    {n:'Walk backwards in heel', how:'Heel position → Walk backward → Dog follows → Say "Back heel" → Reward → Build distance', tip:'Requires solid heel work first. Very impressive!'},
+    {n:'Stack on objects', how:'Teach front paws on object → Then back paws → Both on tiny surface → Say "Stack" → Reward', tip:'Body awareness trick. Great for dog sports!'},
+    {n:'Handstand', how:'Teach to put front paws on wall → Gradually reduce angle → Vertical position → Say "Handstand" → Reward', tip:'Only for strong, young dogs. Build core strength first!'},
+    {n:'Jump through moving hoop', how:'Stationary hoop mastered → Swing hoop slowly → Dog times jump → Say "Hoop" → Reward every success', tip:'Timing is everything. Practice slowly first!'},
+    {n:'Fetch and name 10 toys', how:'Teach 10 toy names individually → Mix all together → Ask for specific toy → Reward only correct choice', tip:'Dogs can learn hundreds of words with enough practice!'},
+    {n:'Agility course', how:'Set up jumps, tunnel, weave poles → Teach each obstacle → Link them together → Add speed → Reward completion', tip:'Full agility requires professional guidance. Incredibly fun!'},
+    {n:'Dance (waltz)', how:'Teach to stand on back legs → Move in a circle → Add music → Say "Dance" → Reward', tip:'Small and medium dogs excel at this beautiful trick!'},
+    {n:'Tightrope walk', how:'Low balance beam → Walk across → Gradually narrow beam → Say "Tightrope" → Reward perfect walks', tip:'Incredible body awareness and concentration required!'},
+    {n:'Say your prayers', how:'Sit → Front paws on chair → Head down between paws → Say "Say your prayers" → Reward', tip:'One of the cutest tricks in existence!'},
+    {n:'Untie shoes', how:'Loose shoelaces → Teach to grab and pull → Tug until untied → Say "Untie" → Reward', tip:'Practical AND impressive. Uses natural tuggy instinct!'},
+    {n:'Laundry helper', how:'Teach to pick up socks → Carry to basket → Drop in → Say "Laundry" → Reward', tip:'Actually helpful around the house!'},
+    {n:'Shopping bag carrier', how:'Teach to hold handle → Walk forward → Carry light bag → Say "Carry" → Reward', tip:'Use very light bags. Protect their jaw and neck!'},
+    {n:'Answer the phone', how:'Phone rings → Dog picks up → Brings to you → Say "Phone" → Reward', tip:'Completely impresses every visitor!'},
+    {n:'Tidy room', how:'Multiple toys → Dog picks up each one → Places in box → Repeat → Say "Tidy up" → Big reward at end', tip:'One of the most complex tricks. Takes months to perfect!'},
+    {n:'Follow a scent trail', how:'Lay scent trail → Hidden treat at end → Say "Find it" → Follow trail to reward', tip:'Activates natural hunting instincts. Deeply satisfying!'},
+    {n:'Painting', how:'Paw dipped in pet-safe paint → Canvas on floor → Dog steps on canvas → Reward → Frame the art!', tip:'Makes amazing gifts! Use non-toxic washable paint only!'},
+    {n:'Blind retrieve', how:'Throw toy out of sight → Send dog → They use nose to find → Bring back → Say "Find it" → Reward', tip:'Tests scenting ability and obedience at the same time!'},
+    {n:'Multiple object find', how:'Name 5 objects → Hide all in room → "Find the ball, find the rope..." → Each correctly found → Reward', tip:'Incredible mental challenge. Hours of enrichment!'},
+    {n:'Freestyle routine', how:'Chain 10+ tricks together → Add music → Practice the routine → Perform at shows', tip:'Canine freestyle is a real competitive sport. Look it up!'},
+    {n:'Open fridge', how:'Teach to pull rope on handle → Door opens → May grab item inside → "Fridge" → Reward', tip:'You may regret teaching this one! They remember it forever!'},
+  ]
+};
+
+var CAT_TRICKS = {
+  beginner: [
+    {n:'Sit', how:'Hold treat above nose → Say "Sit" → Wait for bottom to lower → Reward immediately → Repeat 3 times max', tip:'Cats train best in 3-5 minute sessions. Always end on success!'},
+    {n:'Come when called', how:'Say cat\'s name from nearby → When they approach → Reward with treat → Gradually increase distance', tip:'Never punish a cat who comes to you. Make it magical every time!'},
+    {n:'Stay', how:'Ask to sit → Say "Stay" → Wait 2 seconds → Say "OK" → Reward → Gradually increase time', tip:'2 seconds is perfect to start. Cats have short attention spans!'},
+    {n:'Touch (nose to hand)', how:'Hold finger out → When cat sniffs → Click and reward → Say "Touch" → Repeat', tip:'One of the easiest cat tricks. Great starting point!'},
+    {n:'High five', how:'Hold treat above their head → When paw reaches up → Say "High five" → Reward', tip:'Most cats naturally paw at treats. Capture that behavior!'},
+    {n:'Shake hands', how:'Hold treat in fist → Cat paws at fist → Open hand → Reward → Add cue "Shake"', tip:'Cats are naturally curious. Let them investigate!'},
+    {n:'Jump up (onto surface)', how:'Pat surface → Say "Up" → When cat jumps → Reward → Practice on different surfaces', tip:'Choose a surface they already like. Build on natural behavior!'},
+    {n:'Jump down', how:'Hold treat below → Say "Down" → When cat jumps → Reward → Practice from different heights', tip:'Never force a cat down. They jump on their own terms!'},
+    {n:'Target stick', how:'Present stick → Reward for touching nose to tip → Move stick slowly → Cat follows → Say "Touch"', tip:'Target stick is the foundation of most advanced cat tricks!'},
+    {n:'Sit pretty (beg)', how:'Ask to sit → Hold treat above nose → Wait for front paws to lift → Say "Up" → Reward quickly', tip:'Strengthen core first with shorter duration attempts!'},
+    {n:'Spin', how:'Hold treat at nose → Move slowly in circle → Cat follows → Full circle → Say "Spin" → Reward', tip:'Cats spin more naturally than dogs. Usually quick to learn!'},
+    {n:'Go to mat', how:'Place mat → Reward for stepping on it → Any paw counts → Add cue "Mat" → Build to sitting on it', tip:'The mat becomes a safe, positive space. Choose a comfy one!'},
+    {n:'Look at me', how:'Hold treat to your eyes → When cat makes eye contact → Reward immediately → Say "Look"', tip:'Eye contact is meaningful to cats. Keep sessions very brief!'},
+    {n:'Wait at door', how:'Approach door → Cat approaches too → Stop → When cat stops → Open door → Reward', tip:'Safety trick. Prevents darting out of doors!'},
+    {n:'Walk through tunnel', how:'Place tunnel on floor → Toss treats through → Cat follows → Say "Tunnel" → Reward at exit', tip:'Use a cat tunnel toy. Most cats love tunnels naturally!'},
+    {n:'Fetch (light toy)', how:'Throw small toy → Some cats naturally retrieve → When they bring back → Reward immediately', tip:'Not all cats fetch. If yours doesn\'t, try other tricks!'},
+    {n:'Knock it over', how:'Place light bottle → Reward for any contact → Cat knocks it → Say "Knock it" → Reward', tip:'Uses natural pawing instinct. Very easy to teach!'},
+    {n:'Find the treat', how:'Hide treat under one of 3 cups → Say "Find it" → Cat sniffs and chooses → Reward correct choice', tip:'Their nose is incredible. Start with 2 cups!'},
+    {n:'Sit in box', how:'Place box on floor → When cat sits in it → Reward → Say "Box" → Move to different boxes', tip:'Cats are obsessed with boxes. Easiest trick ever!'},
+    {n:'Follow the laser slowly', how:'Move laser slowly → Say "Follow" → Cat tracks it → Reward with treat at the end → Always end on treat', tip:'Always end laser play with a real treat to avoid frustration!'},
+    {n:'Boop the nose', how:'Hold finger near their nose → When cat boops it → Reward → Say "Boop"', tip:'Incredibly cute. Very natural cat behavior!'},
+    {n:'Walk between legs', how:'Stand with legs slightly apart → Lure through with treat → Reward → Say "Through"', tip:'Small steps work best. Very manageable for cats!'},
+    {n:'Chin up', how:'Hold treat above chin level → Cat lifts head → Say "Chin up" → Reward', tip:'Great for grooming and vet visits!'},
+    {n:'Paw wave', how:'Hold treat just out of reach → Cat reaches with paw → Say "Wave" → Reward → Repeat with no treat', tip:'Most cats will wave naturally when something is just out of reach!'},
+    {n:'Back up', how:'Walk slowly toward cat → When they step back → Say "Back" → Reward → Repeat', tip:'Start with just one step back!'},
+    {n:'Stand tall on back legs', how:'Hold treat high → Cat stretches upward → Say "Stand" → Reward when standing', tip:'Brief holds to start. Build duration slowly!'},
+    {n:'Turn light off', how:'Hold cat near switch → Guide paw to switch → Lights off → Reward → Say "Lights out"', tip:'Completely amazes everyone who sees it!'},
+    {n:'Jump to shoulder', how:'Hold treat at shoulder level → "Up" → Cat jumps → Place safely → Reward → Build comfort', tip:'Build trust first. Let cat choose to stay!'},
+    {n:'Walk on leash', how:'Harness → Indoor practice → Step outside → Follow cat\'s lead → Reward exploration', tip:'Use a harness NEVER a collar. Go at the cat\'s pace!'},
+    {n:'Ring bell for food', how:'Hang bell near food area → Guide paw to bell → Bell rings → Feed → Cat learns bell = food', tip:'Within a week most cats ring it before every meal!'},
+    {n:'Open a door', how:'Attach rope to handle → Teach to pull rope → Door opens → "Open" → Reward', tip:'Cats often figure this out on their own anyway!'},
+    {n:'Play piano', how:'Place paw on key → Key makes noise → Reward → Multiple keys → "Piano" → Reward any touching', tip:'Cats are naturally attracted to things that make sounds!'},
+    {n:'Stand on scale', how:'Place treat on scale → Cat steps on → Read weight → Say "Weigh" → Reward', tip:'Incredibly practical for monitoring health!'},
+    {n:'Sit on command from different rooms', how:'Call name → Say "Sit" → Wait → Reward when they come and sit', tip:'Combines recall with sit. Double the training!'},
+    {n:'Jump through arms', how:'Make circle with arms → Lure through with treat → Say "Through" → Reward', tip:'Start low and slow. Build confidence gradually!'},
+    {n:'Roll on back', how:'Ask to lie down → Gently guide roll → Say "Roll over" → Reward immediately → Never force', tip:'Trust is everything with cats. Always go at their pace!'},
+    {n:'Nose target on wall', how:'Stick target on wall → Guide nose to it → Reward → Move target → Cat follows', tip:'Builds on basic touch training!'},
+    {n:'Sit and stay with distractions', how:'Practice sit → Add mild distraction → Reward for holding → Gradually increase distractions', tip:'Amazing self-control for a cat!'},
+    {n:'Recognize their name', how:'Say name → Any head movement → Reward → Build to turning and coming', tip:'Most cats know their name – they just choose to ignore it! Treats change that!'},
+    {n:'Jump to specific spot', how:'Point to spot → Say "Spot" → When cat jumps there → Reward → Move to different spots', tip:'Great directional control trick!'},
+  ],
+  intermediate: [
+    {n:'Tunnel weave', how:'Set up two tunnels → Lure through first → Then second → Say "Weave" → Reward exit', tip:'Agility for cats! Very fun and stimulating!'},
+    {n:'Slalom through poles', how:'Set up 5 poles → Lure between each → Say "Weave" → Reward at end → Build speed', tip:'Cat agility is a real sport! Look it up for inspiration!'},
+    {n:'Roll over', how:'Lie down → Hold treat at nose → Move toward shoulder → Continue circle → Full roll → Say "Roll" → Reward', tip:'Break into tiny steps. Some cats take weeks!'},
+    {n:'Crawl', how:'Lie down → Hold treat low → Move forward → Cat crawls → Say "Crawl" → Reward', tip:'Keep treats very low to prevent them from standing!'},
+    {n:'Jump and spin', how:'Cat jumping → Add spin cue → Reward spin in air → Chain together → Say "Jump spin"', tip:'High energy trick for playful cats!'},
+    {n:'Fetch specific toy', how:'Name two toys → Practice getting correct one by name → Mix them up → Say "Get the mouse"', tip:'Some cats can learn 10+ toy names!'},
+    {n:'Stack on small surface', how:'Front paws on surface → Then all four → Tiny surface → Say "Stack" → Reward', tip:'Incredible body awareness exercise!'},
+    {n:'Walk backwards', how:'Walk toward cat slowly → They back up → Say "Back" → Reward → Build to 5 steps', tip:'Rarely seen in cat training – very impressive!'},
+    {n:'Find hidden owner', how:'Hide in house → Call cat → When found → Big reward → Move to harder hiding spots', tip:'Combines recall with problem solving!'},
+    {n:'Sit in lap on cue', how:'Pat lap → Say "Lap" → When cat jumps up → Reward staying → Build duration', tip:'Make lap time the most comfortable place ever!'},
+    {n:'Walk figure 8 through legs', how:'Stand still → Lure between legs → Around one leg → Through again → Other leg → Figure 8', tip:'Looks incredibly elegant when mastered!'},
+    {n:'Jump over stick', how:'Hold stick at ankle height → Lure over → Say "Over" → Reward → Gradually raise', tip:'Never go too high – always prioritize safety!'},
+    {n:'Shake rattle toy', how:'Place rattle toy → Paw touches it → Makes sound → Reward → Cat learns to shake it on purpose', tip:'Cats love sounds they create! Very engaging!'},
+    {n:'Press button', how:'Place button on floor → Guide paw to press → Reward → Say "Press" → Button can play sound!', tip:'Battery operated sound buttons work amazingly for this!'},
+    {n:'Wave specifically on left paw', how:'Hold treat to left → Left paw reaches → Say "Left wave" → Reward', tip:'Left and right paw distinction is an advanced concept!'},
+    {n:'Jump through moving hoop', how:'Stationary hoop first → Gently swing → Cat times jump → Say "Hoop" → Reward every success', tip:'Looks like a circus act when mastered!'},
+    {n:'Weave through cones', how:'Set up cones → Lure between each → Build full course → Say "Weave" → Reward', tip:'Mini agility course for your home!'},
+    {n:'Place front paws on specific spots', how:'Two targets on floor → Front paws on both → Say "Place" → Reward', tip:'Precise targeting skill. Very impressive!'},
+    {n:'Back paw targeting', how:'Target on floor → Reward when BACK paw touches → Say "Back paw" → Move target', tip:'Cats rarely think about back paws. Great brain workout!'},
+    {n:'Carry toy to location', how:'Teach to hold toy → Say "Bring it there" pointing → Cat carries toy → Places it → Reward', tip:'Combines multiple skills. Very advanced!'},
+    {n:'Sit stay with food visible', how:'Sit → Place treat visible nearby → "Stay" → Dog stays → Release "OK" → Get treat', tip:'Ultimate impulse control. Weeks of practice!'},
+    {n:'Jump to hand target', how:'Hold hand flat → Say "Hand" → Cat jumps to land front paws on hand → Reward', tip:'Perfect body awareness and coordination!'},
+    {n:'Dance on back legs', how:'Lure up on back legs → Move treat in circle → Cat pivots → Say "Dance" → Reward', tip:'Incredibly cute. Small cats do this beautifully!'},
+    {n:'Wake up alarm (paw on face)', how:'Morning routine → "Wake up" → Cat paws your face → Reward when you wake → They generalize!', tip:'You may regret this one at 5am!'},
+    {n:'Ring dinner bell', how:'Bell near feeding area → Guide paw to bell → Reward with food → "Dinner bell" → Cat rings every meal', tip:'Within days most cats ring before every meal!'},
+    {n:'Open treat dispenser', how:'Puzzle feeder → Cat figures mechanism → Treat released → Reward → Harder puzzles over time', tip:'Great mental enrichment. Level up difficulty over weeks!'},
+    {n:'Recall from outdoors', how:'Practice indoor recall → Move to backyard → Say name + Come → Huge reward → Gradually increase distance', tip:'Critical safety skill for any cat who goes outside!'},
+    {n:'Stay on mat with distraction', how:'Cat on mat → Roll ball nearby → Reward for staying → Gradually increase distraction level', tip:'Incredible impulse control for a cat!'},
+    {n:'Two paws up (stand on object)', how:'Small stable platform → Front paws on it → Add back paws → "Up" → Reward → Balance!', tip:'Fun agility skill. Use a non-slip surface!'},
+    {n:'Recognize 5 toy names', how:'Teach each toy name separately → Test with 2 out → Add more → "Get the fish" → Reward correct', tip:'Intelligence test as much as trick!'},
+    {n:'Jump to marked spot', how:'Place colored mat → "Spot" → Reward landing on mat → Move mat to new locations → Reward', tip:'Precision jumping. Very impressive!'},
+    {n:'Slide down ramp', how:'Gentle inclined board → Lure from top → Cat slides down → Reward at bottom → "Slide"', tip:'Fun activity trick. Make sure ramp is stable!'},
+    {n:'Walk on treadmill', how:'Stationary treadmill → Reward presence → Slow speed → Walk while moving → "Walk"', tip:'Great exercise for indoor cats. Start very slowly!'},
+    {n:'Carry own leash', how:'Teach to hold leash → Walk toward door → Cat carries leash → "Leash time" → Reward', tip:'Completely melts every heart who sees it!'},
+    {n:'Tap specific color', how:'Two colored targets → "Red" → Cat touches red → Reward → "Blue" → Other target', tip:'Color discrimination is incredibly advanced!'},
+  ],
+  advanced: [
+    {n:'Count to 3 (meow)', how:'"One" → Reward one meow → "Two" → Two meows → "Three" → Three meows → Practice daily for weeks', tip:'Takes months but completely astonishes everyone!'},
+    {n:'Open cupboard', how:'Rope on handle → Pull rope → Door opens → Inside treat → "Open" → Reward → Practice daily', tip:'Very useful. Works on most cupboard styles!'},
+    {n:'Close cupboard', how:'Target on door → Guide paw to push → Door closes → "Close" → Reward → Different doors', tip:'The two-trick combo (open and close) is magical!'},
+    {n:'Painting', how:'Tray of pet-safe paint → Guide paw through → Press to canvas → Remove → Dry → Frame!', tip:'Sell the art! People love cat paintings. Non-toxic paint only!'},
+    {n:'Put toys in box by name', how:'Name each toy → Mix all on floor → "Put ball away" → Cat picks correct toy → Drops in box → Reward', tip:'One of the most impressive cat tricks ever filmed!'},
+    {n:'Skateboard', how:'Board on floor → Treat for touching → Paws on board → Push gently → Reward → Build to riding', tip:'Yes cats can skateboard. Takes patience but looks incredible!'},
+    {n:'Agility course', how:'Tunnels, jumps, weave poles → Teach each obstacle → Link them → Run full course → Time it!', tip:'Cat agility is a competitive sport. Very fulfilling!'},
+    {n:'Open treat puzzle box', how:'Box with mechanism → Cat figures out how to open → Gets treat inside → Harder box next week', tip:'Mental stimulation equal to 30 minutes of physical play!'},
+    {n:'String of tricks (10 in a row)', how:'Chain 10 learned tricks → Practice transition between each → Perform sequence → Reward at end', tip:'Requires all basics to be solid. Incredibly impressive performance!'},
+    {n:'Name 10 family members', how:'Practice "find mom" → "Find dad" → Each person → Test with multiple people in room', tip:'Cats genuinely can learn human names!'},
+    {n:'Maze navigation', how:'Set up cardboard maze → Place treat at end → Release cat → Reward successful exit → Make harder', tip:'Great problem-solving challenge!'},
+    {n:'Multi-level agility', how:'Stacked platforms → Jump and climb course → Navigate levels → "Course" → Reward completion', tip:'Full body workout and mental challenge!'},
+    {n:'Dance routine to music', how:'Chain up-down-spin-bow tricks → Practice with music → 30-second routine → Perform for guests', tip:'Cat dancing is a real thing on social media. Film it!'},
+    {n:'Recognize 20 words', how:'Teach objects, people, locations → Test comprehension → "Go to the bedroom" → Reward success', tip:'Cats are far more intelligent than people realize!'},
+    {n:'Play tic-tac-toe', how:'X and O symbols → Teach to tap specific symbol → Alternate with human → "Your turn" → Reward', tip:'Takes months. Result is completely mind-blowing!'},
+    {n:'Identify emotions', how:'"Happy face" → Reward approach → "Sad face" → Different behavior → Test with photos', tip:'Groundbreaking research area. Cats may recognize emotions!'},
+    {n:'Therapy cat behavior', how:'Sit calmly with strangers → Gentle touch acceptance → "Visit" → Reward calm interaction', tip:'Real therapy cats help in hospitals and schools!'},
+    {n:'Fetch and sort toys by type', how:'Mixed toys → "Get the balls" → Cat retrieves only balls → Reward → "Get the mice"', tip:'Advanced category discrimination. Very complex!'},
+    {n:'Run full 12-obstacle agility course', how:'All obstacles mastered → Link in sequence → Race against time → Reward each successful run', tip:'Competitive cat agility has championships worldwide!'},
+    {n:'Alert to alarm', how:'Set phone alarm → When alarm sounds → Cat wakes you → Reward → Cat becomes living alarm clock', tip:'Cats naturally respond to repeated sounds!'},
+    {n:'Find specific scent', how:'Scent on cotton ball → Hide it → "Find the smell" → Reward location → Harder hiding spots', tip:'Cats have incredible scenting ability!'},
+    {n:'Open and close sequence', how:'Open cupboard → Get toy → Close cupboard → Bring toy to you → "Chores" → Big reward', tip:'Four tricks chained together. Truly remarkable!'},
+    {n:'Perform for audience', how:'Chain best 5 tricks → Practice with one person watching → Build to larger audience → "Showtime"', tip:'The ultimate test of training. Make it fun always!'},
+    {n:'Navigate obstacle course blindfolded (you)', how:'Set course → Give verbal cues only → Cat navigates → Find you → Big celebration', tip:'Trust exercise that strengthens your bond enormously!'},
+    {n:'Emergency recall', how:'Special word (say "PEANUT BUTTER") → Immediately appear with best treat EVER → Practice monthly → Lifesaving!', tip:'Use this word ONLY for true emergencies. Saves lives!'},
+    {n:'Identify treat flavors', how:'Two treats → Cat sniffs containers → "Which is chicken?" → Paw on correct one → Reward', tip:'Uses their incredible sense of smell!'},
+  ]
+};
+
+document.getElementById('get-btn').addEventListener('click', function() {
+  var name = document.getElementById('f-name').value.trim() || (petType === 'cat' ? 'your cat' : 'your dog');
+  var breed = document.getElementById('f-breed').value.trim() || (petType === 'cat' ? 'Domestic cat' : 'Mixed breed');
+  var age = document.getElementById('f-age').value;
+  var energy = document.getElementById('f-energy').value;
+  var exp = document.getElementById('f-exp').value;
+
+  document.getElementById('page-form').style.display = 'none';
+  document.getElementById('page-result').style.display = 'block';
+  window.scrollTo(0, 0);
+
+  document.getElementById('res-title').textContent = '101 tricks for ' + name + '! 🎉';
+
+  var breedTips = {
+    husky: 'Huskies were bred in Siberia to run hundreds of miles! Keep sessions to 5-8 min – they get bored fast but love showing off. Use chicken or cheese as treats.',
+    labrador: 'Labradors are eager to please and incredibly food-motivated. One of the easiest breeds to train – they will learn almost anything with enough treats!',
+    golden: 'Golden Retrievers are gentle and social. They love praise just as much as treats – tell them they\'re a good dog and watch them light up!',
+    poodle: 'Poodles are consistently ranked as one of the smartest dog breeds. They pick up new tricks incredibly fast – keep challenging them!',
+    corgi: 'Corgis were bred to herd cattle. They\'re surprisingly athletic and love having a job to do – trick training is perfect for them!',
+    beagle: 'Beagles have one of the best noses in the dog world. Use smelly treats and their nose will do the work!',
+    siamese: 'Siamese cats are one of the most social breeds. They actually enjoy training sessions and will talk back to you the whole time!',
+    maine: 'Maine Coons are called the dogs of the cat world. They can learn to walk on a leash and even play fetch!',
+    bengal: 'Bengal cats need daily mental stimulation. Trick training is perfect – it channels their wild energy productively!',
+    persian: 'Persian cats are calm and gentle. Keep sessions very short (3-5 min) and use soft treats. They prefer quiet training.',
+    ragdoll: 'Ragdolls are famously relaxed and go limp when picked up! They respond beautifully to gentle, patient training.',
+  };
+
+  var breedLower = breed.toLowerCase();
+  var tip = null;
+  for (var k in breedTips) {
+    if (breedLower.indexOf(k) > -1) { tip = breedTips[k]; break; }
+  }
+
+  document.getElementById('breed-title').textContent = (petType === 'cat' ? '🐱' : '🐾') + ' Tips for your ' + breed;
+  document.getElementById('breed-tip').textContent = tip || (petType === 'cat'
+    ? 'Cats train on their own terms. Short sessions (3-5 min), high-value treats like tuna or chicken, and patience are the keys to success with ' + name + '!'
+    : 'Every dog is unique! Watch ' + name + '\'s reactions and always adjust the pace. Short sessions of 5-10 minutes work best.');
+
+  var db = petType === 'cat' ? CAT_TRICKS : DOG_TRICKS;
+
+  // Personalize trick tips based on breed/energy
+  var personalizedBeg = db.beginner.map(function(t) {
+    return { n: t.n, how: t.how, tip: t.tip };
+  });
+  var personalizedInt = db.intermediate.map(function(t) {
+    return { n: t.n, how: t.how, tip: t.tip };
+  });
+  var personalizedAdv = db.advanced.map(function(t) {
+    return { n: t.n, how: t.how, tip: t.tip };
+  });
+
+  var sections = [
+    { label: 'Beginner Tricks', emoji: '🌱', pill: 'p-beg', badge: 'Beginner', tricks: personalizedBeg },
+    { label: 'Intermediate Tricks', emoji: '📈', pill: 'p-int', badge: 'Intermediate', tricks: personalizedInt },
+    { label: 'Advanced Tricks', emoji: '🏆', pill: 'p-adv', badge: 'Advanced', tricks: personalizedAdv },
+  ];
+
+  // Add training intro tip
+  var trainingTip = petType === 'cat'
+    ? '<div class="training-tip-box">🎯 <strong>Key to cat training:</strong> Keep sessions to <strong>3-5 minutes</strong>, use high-value treats like tuna or chicken, always end on a success, and NEVER force your cat. Cats learn through positive association – make every session fun and they will keep coming back for more!</div>'
+    : '<div class="training-tip-box">🎯 <strong>Key to dog training:</strong> Keep sessions to <strong>5-10 minutes</strong>, use high-value treats, end every session on a success, and stay consistent. The tricks are ordered from easiest to hardest – master each level before moving on!</div>';
+
+  var html = trainingTip;
+  var num = 1;
+  for (var s = 0; s < sections.length; s++) {
+    var sec = sections[s];
+    // Add context between sections
+    var secIntro = '';
+    if (sec.badge === 'Beginner') secIntro = '<div style="font-size:13px;color:#5A4030;background:#FFF8EE;border-radius:10px;padding:10px 14px;margin-bottom:10px;line-height:1.7">Perfect for dogs and cats at any age. Master these before moving on. Each trick builds confidence and strengthens your bond! 🌱</div>';
+    if (sec.badge === 'Intermediate') secIntro = '<div style="font-size:13px;color:#5A4030;background:#FFF8EE;border-radius:10px;padding:10px 14px;margin-bottom:10px;line-height:1.7">Ready for a challenge! These tricks require solid basics. If your pet struggles, go back and reinforce the beginner tricks first. 📈</div>';
+    if (sec.badge === 'Advanced') secIntro = '<div style="font-size:13px;color:#5A4030;background:#FFF8EE;border-radius:10px;padding:10px 14px;margin-bottom:10px;line-height:1.7">For the dedicated trainer! These tricks take weeks or months to perfect. Celebrate every small improvement along the way. 🏆</div>';
+    
+    var bannerImgs = {
+      'Beginner': 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80',
+      'Intermediate': 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&q=80',
+      'Advanced': 'https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=800&q=80',
+    };
+    var catBannerImgs = {
+      'Beginner': 'https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=800&q=80',
+      'Intermediate': 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=800&q=80',
+      'Advanced': 'https://images.unsplash.com/photo-1494256997604-768d1f608cac?w=800&q=80',
+    };
+    var imgs = petType === 'cat' ? catBannerImgs : bannerImgs;
+    var bannerImg = imgs[sec.badge] || bannerImgs['Beginner'];
+    
+    html += '<div class="sec-banner"><img src="' + bannerImg + '" alt="' + sec.label + '"><div class="sec-banner-overlay"></div><div class="sec-banner-text"><span class="sec-banner-title">' + sec.emoji + ' ' + sec.label + '</span><span class="sec-pill ' + sec.pill + '">' + sec.badge + '</span></div></div>';
+    html += '<div class="sec-intro">' + secIntro.replace('<div style="font-size:13px;color:#5A4030;background:#FFF8EE;border-radius:10px;padding:10px 14px;margin-bottom:10px;line-height:1.7">', '').replace('</div>', '') + '</div>';
+    for (var t = 0; t < sec.tricks.length; t++) {
+      var trick = sec.tricks[t];
+      var trickHtml = '<div class="trick">' +
+        '<div class="trick-hdr" onclick="var b=this.nextElementSibling;b.style.display=b.style.display===\'block\'?\'none\':\'block\'">' +
+        '<div class="trick-num">' + num + '</div>' +
+        '<div class="trick-name">' + trick.n + '</div>' +
+        '<span style="font-size:16px">🐾</span>' +
+        '</div>' +
+        '<div class="trick-body">' +
+        (function() {
+          var steps = trick.how.split(' → ');
+          var stepsHtml = steps.map(function(step, i) {
+            return '<div class="trick-step"><div class="trick-step-num">' + (i+1) + '</div><span>' + step + '</span></div>';
+          }).join('');
+          return '<div class="trick-how">' + stepsHtml + '</div>' +
+            '<div class="trick-tip">💡 <strong>Tip for ' + breed + ':</strong> ' + trick.tip + '</div>';
+        })() +
+        '</div>' +
+        '</div>';
+      html += trickHtml;
+      num++;
+    }
+  }
+  document.getElementById('tricks-out').innerHTML = html;
+
+  // Build download text
+  var dlText = '101 TRICKS FOR ' + name.toUpperCase() + ' THE ' + breed.toUpperCase() + '\n';
+  dlText += 'Generated by NordicPlans\n';
+  dlText += '='.repeat(50) + '\n\n';
+  num = 1;
+  for (var s = 0; s < sections.length; s++) {
+    dlText += '\n' + sections[s].emoji + ' ' + sections[s].label.toUpperCase() + '\n' + '-'.repeat(30) + '\n\n';
+    for (var t = 0; t < sections[s].tricks.length; t++) {
+      var trick = sections[s].tricks[t];
+      dlText += num + '. ' + trick.n + '\n';
+      dlText += 'How: ' + trick.how + '\n';
+      dlText += 'Tip: ' + trick.tip + '\n\n';
+      num++;
+    }
+  }
+
+  var blob = new Blob([dlText], { type: 'text/plain;charset=utf-8' });
+  document.getElementById('dl-btn').href = URL.createObjectURL(blob);
+  document.getElementById('dl-btn').download = '101_Tricks_For_' + name + '.txt';
+});
+
+function restart() {
+  document.getElementById('page-result').style.display = 'none';
+  document.getElementById('page-form').style.display = 'flex';
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

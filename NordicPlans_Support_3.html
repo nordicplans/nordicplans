@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NordicPlans – Support</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--dark:#0D1F12;--green:#1A3020;--gold:#D4A853;--text:#F2F7F2;--muted:#6B8F6B;--border:rgba(212,168,83,0.2);--surface:rgba(255,255,255,0.05)}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 16px}
+.wrap{width:100%;max-width:560px}
+
+/* HEADER */
+.logo{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:32px}
+.hero{text-align:center;margin-bottom:36px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,42px);font-weight:900;color:var(--text);margin-bottom:10px;line-height:1.1}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero p{font-size:15px;color:var(--muted);line-height:1.7}
+
+/* QUICK ANSWERS */
+.quick-title{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.quick-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.quick-btn{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 16px;text-align:left;color:var(--text);font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;display:flex;align-items:center;gap:10px}
+.quick-btn:hover{background:rgba(212,168,83,0.08);border-color:rgba(212,168,83,0.4)}
+.quick-icon{font-size:18px;flex-shrink:0}
+
+/* CHAT */
+.chat-wrap{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:16px}
+.chat-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.chat-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#B8882A);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#0D1F12;flex-shrink:0}
+.chat-info{flex:1}
+.chat-name{font-size:14px;font-weight:600;color:var(--text)}
+.chat-status{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.status-dot{width:6px;height:6px;border-radius:50%;background:#4CAF8C;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+.chat-msgs{padding:18px;display:flex;flex-direction:column;gap:12px;min-height:200px;max-height:400px;overflow-y:auto}
+
+.msg-ai{display:flex;gap:10px;align-items:flex-start}
+.msg-ai-bubble{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:4px 14px 14px 14px;padding:12px 15px;font-size:14px;line-height:1.7;color:var(--text);max-width:88%}
+.msg-ai-bubble strong{color:var(--gold)}
+
+.msg-user{display:flex;justify-content:flex-end}
+.msg-user-bubble{background:var(--gold);color:#0D1F12;border-radius:14px 14px 4px 14px;padding:11px 15px;font-size:14px;line-height:1.6;max-width:80%;font-weight:500}
+
+/* INPUT */
+.chat-input{border-top:1px solid var(--border);padding:12px 14px;display:flex;gap:8px;align-items:flex-end}
+.chat-textarea{flex:1;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);resize:none;min-height:24px;max-height:100px;line-height:1.5}
+.chat-textarea::placeholder{color:var(--muted)}
+.send-btn{width:38px;height:38px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s}
+.send-btn:hover{background:#E8C47A;transform:scale(1.05)}
+.send-btn:disabled{background:rgba(255,255,255,0.1);cursor:default;transform:none}
+
+/* TYPING */
+.typing{display:flex;gap:4px;align-items:center;padding:4px 0}
+.td{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:bounce 1s infinite}
+.td:nth-child(2){animation-delay:0.15s}
+.td:nth-child(3){animation-delay:0.3s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+
+/* PRODUCTS */
+.products{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+.product-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center}
+.product-emoji{font-size:28px;margin-bottom:6px}
+.product-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.product-price{font-size:12px;color:var(--gold);font-weight:700;margin-bottom:10px}
+.product-btn{display:block;padding:8px;border-radius:100px;background:var(--gold);color:#0D1F12;font-size:12px;font-weight:700;text-decoration:none;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.product-btn:hover{background:#E8C47A}
+
+.footer-note{font-size:12px;color:var(--muted);text-align:center;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo">NordicPlans · Support</div>
+
+  <div class="hero">
+    <h1>How can we<br><em>help you?</em></h1>
+    <p>Ask anything about your purchase, how the products work, or anything else. We reply instantly.</p>
+  </div>
+
+  <!-- QUICK QUESTIONS -->
+  <div class="quick-title">Common questions</div>
+  <div class="quick-grid">
+    <button class="quick-btn" onclick="ask('I purchased but haven\'t received my file yet. What should I do?')">
+      <span class="quick-icon">📧</span>I didn't receive my file after purchase
+    </button>
+    <button class="quick-btn" onclick="ask('How do I open the HTML file I downloaded?')">
+      <span class="quick-icon">📂</span>How do I open the file?
+    </button>
+    <button class="quick-btn" onclick="ask('Can I use the product on my phone or tablet?')">
+      <span class="quick-icon">📱</span>Does it work on my phone?
+    </button>
+    <button class="quick-btn" onclick="ask('I want a refund. How do I get one?')">
+      <span class="quick-icon">💰</span>I want a refund
+    </button>
+    <button class="quick-btn" onclick="ask('The tricks don\'t seem personalized for my pet. What can I do?')">
+      <span class="quick-icon">🐾</span>The tricks don't feel personalized
+    </button>
+    <button class="quick-btn" onclick="ask('Can I generate a new plan with different information?')">
+      <span class="quick-icon">🔄</span>Can I generate a new plan?
+    </button>
+  </div>
+
+  <!-- CHAT -->
+  <div class="chat-wrap">
+    <div class="chat-header">
+      <div class="chat-avatar">N</div>
+      <div class="chat-info">
+        <div class="chat-name">NordicPlans Support</div>
+        <div class="chat-status"><div class="status-dot"></div>Online – replies instantly</div>
+      </div>
+    </div>
+    <div class="chat-msgs" id="msgs">
+      <div class="msg-ai">
+        <div class="chat-avatar" style="width:32px;height:32px;font-size:12px;flex-shrink:0">N</div>
+        <div class="msg-ai-bubble">
+          Hi! 👋 I'm the NordicPlans support assistant.<br><br>
+          I can help you with your purchase, how to use the products, or anything else. What can I help you with today?
+        </div>
+      </div>
+    </div>
+    <div class="chat-input">
+      <textarea id="inp" class="chat-textarea" placeholder="Type your question..." rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}"
+        oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      <button class="send-btn" onclick="send()" id="sbtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D1F12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+
+
+  <p class="footer-note">Still need help? Email us at <strong style="color:var(--gold)">support@nordicplans.com</strong><br>We reply within 24 hours.</p>
+
+</div>
+
+<script>
+const SYSTEM = `You are a friendly and helpful customer support agent for NordicPlans, a digital products store. 
+
+Our product:
+101 Pet Tricks – Dogs & Cats ($7.99) - Customer fills in their pet's details (name, breed, age, energy level), AI generates 101 personalized tricks for their dog or cat. Delivered as a link via Payhip email. Customer opens the link in their browser, fills in details and downloads their personalized guide.
+
+Common issues and solutions:
+- File not received: Check spam folder. If not there, contact Payhip directly at support@payhip.com with order number.
+- How to open file: Double-click the .html file, it opens in any browser (Chrome, Safari, Edge).
+- Works on phone: Yes! Open in mobile browser.
+- Refunds: 30-day money back guarantee. Contact support@nordicplans.com with order number.
+- Generate new plan: Yes! Just open the file again and fill in different details.
+- Not personalized enough: Make sure to fill in all fields accurately. The more detail, the better the result.
+
+Be warm, helpful and concise. Reply in the same language the customer writes in. Max 3-4 sentences.`;
+
+let history = [];
+
+async function send() {
+  const inp = document.getElementById('inp');
+  const msg = inp.value.trim();
+  if(!msg) return;
+  inp.value = '';
+  inp.style.height = 'auto';
+  addUser(msg);
+  history.push({role:'user', content:msg});
+  await getReply();
+}
+
+async function ask(q) {
+  addUser(q);
+  history.push({role:'user', content:q});
+  await getReply();
+}
+
+function addUser(msg) {
+  const msgs = document.getElementById('msgs');
+  msgs.innerHTML += `<div class="msg-user"><div class="msg-user-bubble">${msg}</div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function getReply() {
+  const msgs = document.getElementById('msgs');
+  const btn = document.getElementById('sbtn');
+  btn.disabled = true;
+  const tid = 't' + Date.now();
+  msgs.innerHTML += `<div id="${tid}" class="msg-ai"><div class="chat-avatar" style="width:32px;height:32px;font-size:12px;flex-shrink:0">N</div><div class="msg-ai-bubble"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514', max_tokens:300,
+        system: SYSTEM,
+        messages: history
+      })
+    });
+    const d = await r.json();
+    const reply = d.content.map(b => b.text||'').join('');
+    history.push({role:'assistant', content:reply});
+    document.getElementById(tid)?.remove();
+    msgs.innerHTML += `<div class="msg-ai"><div class="chat-avatar" style="width:32px;height:32px;font-size:12px;flex-shrink:0">N</div><div class="msg-ai-bubble">${reply.replace(/\n/g,'<br>')}</div></div>`;
+  } catch(e) {
+    document.getElementById(tid)?.remove();
+    msgs.innerHTML += `<div class="msg-ai"><div class="chat-avatar" style="width:32px;height:32px;font-size:12px;flex-shrink:0">N</div><div class="msg-ai-bubble">Something went wrong – please try again or email us at support@nordicplans.com</div></div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>
