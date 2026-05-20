@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transform – Your Personal Fitness & Meal Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#D4A853;--dark:#0D0C0A;--surface:#141210;--surface2:#1C1A16;
+  --border:rgba(212,168,83,0.18);--text:#F2EDE4;--muted:#7A7060;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 16px}
+.wrap{width:100%;max-width:480px}
+
+.logo{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:48px}
+
+.hero{text-align:center;margin-bottom:36px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(38px,7vw,60px);font-weight:900;line-height:1.05;letter-spacing:-0.5px;margin-bottom:16px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero p{font-size:16px;color:var(--muted);line-height:1.75;font-weight:300;max-width:360px;margin:0 auto}
+
+.includes{background:var(--surface2);border:1px solid rgba(212,168,83,0.3);border-radius:18px;padding:22px 24px;margin-bottom:28px}
+.inc-title{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.inc-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text);line-height:1.5;margin-bottom:10px}
+.inc-item:last-child{margin-bottom:0}
+.inc-check{color:var(--gold);flex-shrink:0}
+
+.form-card{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:26px;margin-bottom:20px}
+.section-label{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:block}
+
+.goal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
+.goal-btn{padding:14px 10px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;text-align:center;line-height:1.3}
+.goal-btn .icon{font-size:22px;display:block;margin-bottom:5px}
+.goal-btn:hover{border-color:rgba(212,168,83,0.4);color:var(--gold)}
+.goal-btn.sel{border-color:var(--gold);background:rgba(212,168,83,0.1);color:var(--gold)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.field{margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+.lbl{font-size:12px;font-weight:500;color:var(--muted);margin-bottom:6px;display:block}
+.inp{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s}
+.inp:focus{border-color:rgba(212,168,83,0.5)}
+.inp::placeholder{color:var(--muted)}
+select.inp option{background:#1C1A16}
+
+.buy-btn{width:100%;padding:18px;border-radius:100px;background:var(--gold);color:#0D0C0A;border:none;font-size:17px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px}
+.buy-btn:hover{background:#E8C47A;transform:translateY(-2px);box-shadow:0 10px 36px rgba(212,168,83,0.3)}
+.price{background:rgba(0,0,0,0.2);padding:4px 14px;border-radius:100px;font-size:15px}
+.note{font-size:12px;color:var(--muted);text-align:center;line-height:1.7}
+
+#loading{display:none;text-align:center;padding:52px 20px}
+.load-logo{font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);margin-bottom:28px}
+.load-bar{width:100%;height:3px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-bottom:18px}
+.load-fill{height:100%;background:linear-gradient(90deg,var(--gold),#E8C47A);border-radius:3px;width:0%;transition:width 0.6s ease}
+.load-msg{font-size:14px;color:var(--muted);line-height:1.7}
+
+#result{display:none;padding:20px 0}
+.res-check{font-size:60px;margin-bottom:20px;text-align:center}
+.res-title{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;margin-bottom:10px;text-align:center}
+.res-sub{font-size:15px;color:var(--muted);margin-bottom:32px;line-height:1.7;max-width:340px;margin-left:auto;margin-right:auto;text-align:center}
+.dl-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:17px 40px;border-radius:100px;background:var(--gold);color:#0D0C0A;border:none;font-size:16px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all 0.2s;margin-bottom:16px;width:100%}
+.dl-btn:hover{background:#E8C47A;transform:translateY(-1px)}
+.restart{font-size:13px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;margin-top:8px;display:block;width:100%;text-align:center}
+.restart:hover{color:var(--gold)}
+
+.plan-preview{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:24px;margin-top:24px;font-size:13px;color:var(--text);line-height:1.9;text-align:left;white-space:pre-wrap;font-family:'DM Sans',sans-serif;max-height:420px;overflow-y:auto}
+.plan-preview::-webkit-scrollbar{width:4px}
+.plan-preview::-webkit-scrollbar-track{background:var(--surface)}
+.plan-preview::-webkit-scrollbar-thumb{background:var(--gold);border-radius:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- FORM -->
+  <div id="form-view">
+    <div class="logo">Transform</div>
+
+    <div class="hero">
+      <h1>Your body.<br>Your goal.<br><em>Your plan.</em></h1>
+      <p>Fill in your details and get a complete personalized fitness and meal plan – built for you instantly.</p>
+    </div>
+
+    <div class="includes">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div class="inc-title" style="margin-bottom:0">Everything included</div>
+        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--gold);letter-spacing:-0.5px">$4.99</div>
+      </div>
+      <div class="inc-item"><span class="inc-check">✓</span>Full 4-week training program – home, gym or dumbbells</div>
+      <div class="inc-item"><span class="inc-check">✓</span>Complete 7-day meal plan with exact portions</div>
+      <div class="inc-item"><span class="inc-check">✓</span>Your personal calorie & macro targets</div>
+      <div class="inc-item"><span class="inc-check">✓</span>Weekly grocery list by category</div>
+      <div class="inc-item"><span class="inc-check">✓</span>Weeks 5–8 progression plan</div>
+      <div class="inc-item"><span class="inc-check">✓</span>3 rules tailored to your specific goal</div>
+      <div class="inc-item"><span class="inc-check">✓</span>Instant download – yours forever</div>
+    </div>
+
+    <div class="form-card">
+      <span class="section-label">What's your goal?</span>
+      <div class="goal-grid">
+        <button class="goal-btn" onclick="setGoal('build muscle',this)"><span class="icon">💪</span>Build Muscle</button>
+        <button class="goal-btn" onclick="setGoal('lose weight',this)"><span class="icon">🔥</span>Lose Weight</button>
+        <button class="goal-btn" onclick="setGoal('more energy',this)"><span class="icon">⚡</span>More Energy</button>
+        <button class="goal-btn" onclick="setGoal('get stronger',this)"><span class="icon">⚖️</span>Get Stronger</button>
+      </div>
+
+      <span class="section-label">About you</span>
+      <div class="grid2">
+        <div class="field">
+          <label class="lbl">Weight (kg)</label>
+          <input class="inp" type="number" id="weight" placeholder="e.g. 75" min="30" max="250">
+        </div>
+        <div class="field">
+          <label class="lbl">Height (cm)</label>
+          <input class="inp" type="number" id="height" placeholder="e.g. 178" min="100" max="230">
+        </div>
+        <div class="field">
+          <label class="lbl">Age</label>
+          <input class="inp" type="number" id="age" placeholder="e.g. 25" min="10" max="90">
+        </div>
+        <div class="field">
+          <label class="lbl">Gender</label>
+          <select class="inp" id="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="lbl">Current activity level</label>
+        <select class="inp" id="level">
+          <option value="sedentary">🌱 Sedentary – not exercising</option>
+          <option value="light">📈 Lightly active – 1–2x/week</option>
+          <option value="moderate">💪 Moderately active – 3–4x/week</option>
+          <option value="active">🔥 Very active – 5+x/week</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="lbl">Available equipment</label>
+        <select class="inp" id="equipment">
+          <option value="home">🏠 Home – no equipment</option>
+          <option value="dumbbells">🏠 Home with dumbbells</option>
+          <option value="gym">🏋️ Gym</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="buy-btn" onclick="generate()" id="gen-btn">
+      Get my plan
+      <span class="price" style="background:rgba(0,0,0,0.25);padding:5px 16px;border-radius:100px;font-size:17px;font-weight:700">$4.99</span>
+    </button>
+    <p class="note">Instant download · No subscription · 100% personalized</p>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loading">
+    <div class="load-logo">Transform</div>
+    <div class="load-bar"><div class="load-fill" id="load-fill"></div></div>
+    <div class="load-msg" id="load-msg">Calculating your calorie needs...</div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result">
+    <div class="res-check">✅</div>
+    <div class="res-title">Your plan is ready!</div>
+    <div class="res-sub">Your complete personalized plan is ready. Save it and use it every single day.</div>
+    <button class="dl-btn" id="dl-btn" onclick="downloadPlan()">⬇ Download my plan</button>
+    <button class="restart" onclick="restart()">← Make a new plan</button>
+    <div class="plan-preview" id="preview"></div>
+  </div>
+
+</div>
+<script>
+let goal = '';
+let generatedPlan = '';
+
+function setGoal(g, btn) {
+  goal = g;
+  document.querySelectorAll('.goal-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function setLoad(p, m) {
+  document.getElementById('load-fill').style.width = p + '%';
+  document.getElementById('load-msg').textContent = m;
+}
+
+// ─── TRAINING PLANS ────────────────────────────────────────────────────────
+
+const training = {
+  'build muscle': {
+    home: `MONDAY – Push (Chest & Shoulders)
+  1. Push-Ups – 4 sets × 15 reps (rest 60s)
+  2. Pike Push-Ups – 3 sets × 12 reps (rest 60s)
+  3. Wide Push-Ups – 3 sets × 12 reps (rest 60s)
+  4. Tricep Dips (chair) – 3 sets × 15 reps (rest 60s)
+  5. Diamond Push-Ups – 3 sets × 10 reps (rest 60s)
+
+TUESDAY – Pull (Back & Biceps)
+  1. Doorframe Rows – 4 sets × 12 reps (rest 60s)
+  2. Superman Hold – 3 sets × 30s (rest 45s)
+  3. Towel Bicep Curl – 3 sets × 15 reps (rest 60s)
+  4. Reverse Snow Angels (floor) – 3 sets × 15 reps (rest 45s)
+  5. Plank to Downward Dog – 3 sets × 10 reps (rest 45s)
+
+WEDNESDAY – REST / Light Walk
+
+THURSDAY – Legs & Glutes
+  1. Squats – 4 sets × 20 reps (rest 60s)
+  2. Bulgarian Split Squat – 3 sets × 12 each leg (rest 75s)
+  3. Glute Bridge – 4 sets × 20 reps (rest 45s)
+  4. Reverse Lunges – 3 sets × 12 each (rest 60s)
+  5. Calf Raises – 4 sets × 25 reps (rest 30s)
+
+FRIDAY – Full Body Power
+  1. Burpees – 4 sets × 10 reps (rest 75s)
+  2. Jump Squats – 3 sets × 15 reps (rest 60s)
+  3. Push-Up to Row – 3 sets × 10 reps (rest 60s)
+  4. Mountain Climbers – 3 sets × 30s (rest 45s)
+  5. Plank Hold – 3 sets × 45s (rest 45s)
+
+SATURDAY – Core & Mobility
+  1. Bicycle Crunches – 3 sets × 20 reps (rest 30s)
+  2. Leg Raises – 3 sets × 15 reps (rest 30s)
+  3. Russian Twists – 3 sets × 20 reps (rest 30s)
+  4. Dead Bug – 3 sets × 10 each (rest 30s)
+  5. Hip Flexor Stretch – 3 × 60s each side
+
+SUNDAY – REST`,
+
+    dumbbells: `MONDAY – Chest & Triceps
+  1. Dumbbell Press (floor) – 4 sets × 12 reps (rest 75s)
+  2. Dumbbell Flyes (floor) – 3 sets × 12 reps (rest 60s)
+  3. Overhead Tricep Extension – 3 sets × 15 reps (rest 60s)
+  4. Tricep Kickbacks – 3 sets × 15 reps (rest 60s)
+  5. Push-Ups (weighted) – 3 sets × 12 reps (rest 60s)
+
+TUESDAY – Back & Biceps
+  1. Dumbbell Row – 4 sets × 12 each (rest 75s)
+  2. Dumbbell Deadlift – 4 sets × 10 reps (rest 90s)
+  3. Dumbbell Curl – 3 sets × 15 reps (rest 60s)
+  4. Hammer Curl – 3 sets × 12 reps (rest 60s)
+  5. Reverse Fly – 3 sets × 15 reps (rest 60s)
+
+WEDNESDAY – REST
+
+THURSDAY – Legs
+  1. Dumbbell Goblet Squat – 4 sets × 15 reps (rest 75s)
+  2. Dumbbell Lunges – 4 sets × 12 each (rest 60s)
+  3. Romanian Deadlift – 4 sets × 12 reps (rest 90s)
+  4. Dumbbell Step-Up – 3 sets × 12 each (rest 60s)
+  5. Calf Raises (dumbbells) – 4 sets × 20 reps (rest 30s)
+
+FRIDAY – Shoulders & Core
+  1. Dumbbell Shoulder Press – 4 sets × 12 reps (rest 75s)
+  2. Lateral Raises – 4 sets × 15 reps (rest 60s)
+  3. Front Raises – 3 sets × 12 reps (rest 60s)
+  4. Dumbbell Shrugs – 3 sets × 15 reps (rest 45s)
+  5. Plank Hold – 3 sets × 45s (rest 45s)
+
+SATURDAY – Active Recovery / Light Walk
+
+SUNDAY – REST`,
+
+    gym: `MONDAY – Chest & Triceps
+  1. Barbell Bench Press – 4 sets × 8 reps (rest 90s)
+  2. Incline Dumbbell Press – 4 sets × 10 reps (rest 75s)
+  3. Cable Flyes – 3 sets × 15 reps (rest 60s)
+  4. Tricep Pushdown – 4 sets × 12 reps (rest 60s)
+  5. Overhead Tricep Extension – 3 sets × 12 reps (rest 60s)
+
+TUESDAY – Back & Biceps
+  1. Deadlift – 4 sets × 5 reps (rest 2min)
+  2. Barbell Row – 4 sets × 8 reps (rest 90s)
+  3. Lat Pulldown – 4 sets × 10 reps (rest 75s)
+  4. Barbell Curl – 3 sets × 12 reps (rest 60s)
+  5. Hammer Curl – 3 sets × 12 reps (rest 60s)
+
+WEDNESDAY – REST
+
+THURSDAY – Legs
+  1. Barbell Squat – 4 sets × 6 reps (rest 2min)
+  2. Leg Press – 4 sets × 12 reps (rest 90s)
+  3. Romanian Deadlift – 3 sets × 10 reps (rest 90s)
+  4. Leg Curl – 3 sets × 12 reps (rest 75s)
+  5. Calf Raises – 4 sets × 20 reps (rest 45s)
+
+FRIDAY – Shoulders & Core
+  1. Overhead Press – 4 sets × 8 reps (rest 90s)
+  2. Lateral Raises – 4 sets × 15 reps (rest 60s)
+  3. Face Pulls – 3 sets × 15 reps (rest 60s)
+  4. Cable Crunch – 3 sets × 15 reps (rest 60s)
+  5. Plank Hold – 3 sets × 60s (rest 45s)
+
+SATURDAY – Active Recovery
+
+SUNDAY – REST`
+  },
+
+  'lose weight': {
+    home: `MONDAY – HIIT Cardio (30 min)
+  1. Jump Jacks – 4 sets × 45s on / 15s off
+  2. High Knees – 4 sets × 40s on / 20s off
+  3. Burpees – 4 sets × 30s on / 30s off
+  4. Mountain Climbers – 4 sets × 40s on / 20s off
+  5. Squat Jumps – 4 sets × 30s on / 30s off
+
+TUESDAY – Full Body Circuit
+  1. Push-Ups – 3 sets × 15 reps (rest 45s)
+  2. Squats – 3 sets × 20 reps (rest 45s)
+  3. Glute Bridge – 3 sets × 20 reps (rest 30s)
+  4. Plank – 3 sets × 45s (rest 30s)
+  5. Reverse Lunges – 3 sets × 12 each (rest 45s)
+
+WEDNESDAY – Low Intensity Walk 30–45 min
+
+THURSDAY – HIIT Cardio (30 min)
+  1. Skater Hops – 4 sets × 40s on / 20s off
+  2. Speed Squats – 4 sets × 40s on / 20s off
+  3. Plank to Push-Up – 4 sets × 30s on / 30s off
+  4. Lateral Shuffles – 4 sets × 40s on / 20s off
+  5. Jump Rope Simulation – 4 sets × 45s on / 15s off
+
+FRIDAY – Strength Circuit
+  1. Push-Up Variations – 4 sets × 12 reps (rest 45s)
+  2. Bulgarian Split Squat – 3 sets × 10 each (rest 60s)
+  3. Superman – 3 sets × 15 reps (rest 30s)
+  4. Bicycle Crunch – 3 sets × 20 reps (rest 30s)
+  5. Step-Ups (chair) – 3 sets × 12 each (rest 45s)
+
+SATURDAY – Walk or Light Yoga (30 min)
+
+SUNDAY – REST`,
+
+    dumbbells: `MONDAY – HIIT with Dumbbells
+  1. Dumbbell Thruster – 4 sets × 12 reps (rest 45s)
+  2. Dumbbell Swing – 4 sets × 15 reps (rest 45s)
+  3. Renegade Row – 3 sets × 10 each (rest 60s)
+  4. Push-Up to Row – 3 sets × 10 reps (rest 60s)
+  5. Jump Squats – 4 sets × 15 reps (rest 45s)
+
+TUESDAY – Full Body Burn
+  1. Goblet Squat – 4 sets × 15 reps (rest 60s)
+  2. Dumbbell Row – 3 sets × 12 each (rest 60s)
+  3. Dumbbell Press (floor) – 3 sets × 12 reps (rest 60s)
+  4. Lunge + Curl – 3 sets × 12 each (rest 60s)
+  5. Mountain Climbers – 3 sets × 30s (rest 30s)
+
+WEDNESDAY – Walk 30–45 min
+
+THURSDAY – HIIT Circuit
+  1. Dumbbell Deadlift – 4 sets × 12 reps (rest 60s)
+  2. Lateral Raises – 3 sets × 15 reps (rest 45s)
+  3. Romanian Deadlift – 4 sets × 12 reps (rest 75s)
+  4. Plank Row – 3 sets × 10 each (rest 60s)
+  5. Burpees (no dumbbells) – 4 sets × 10 reps (rest 60s)
+
+FRIDAY – Metabolic Strength
+  1. Squat + Press – 4 sets × 12 reps (rest 60s)
+  2. Reverse Fly – 3 sets × 15 reps (rest 45s)
+  3. Dumbbell Crunch – 3 sets × 15 reps (rest 30s)
+  4. Step-Up + Curl – 3 sets × 10 each (rest 60s)
+  5. Russian Twist (dumbbell) – 3 sets × 20 reps (rest 30s)
+
+SATURDAY – Light Activity / Walk
+
+SUNDAY – REST`,
+
+    gym: `MONDAY – Cardio + Upper Body
+  1. Treadmill Intervals (1 min fast / 1 min walk) – 15 min
+  2. Cable Row – 4 sets × 12 reps (rest 60s)
+  3. Chest Press Machine – 3 sets × 12 reps (rest 60s)
+  4. Lat Pulldown – 3 sets × 12 reps (rest 60s)
+  5. Tricep Pushdown – 3 sets × 15 reps (rest 45s)
+
+TUESDAY – Cardio + Lower Body
+  1. Stairmaster – 15 min
+  2. Leg Press – 4 sets × 15 reps (rest 75s)
+  3. Leg Curl – 3 sets × 15 reps (rest 60s)
+  4. Walking Lunges – 3 sets × 20 steps (rest 60s)
+  5. Calf Raises – 4 sets × 25 reps (rest 30s)
+
+WEDNESDAY – Steady State Cardio (30 min)
+
+THURSDAY – Full Body Circuit
+  1. Barbell Deadlift – 4 sets × 8 reps (rest 90s)
+  2. Dumbbell Shoulder Press – 3 sets × 12 reps (rest 60s)
+  3. Cable Crunch – 3 sets × 15 reps (rest 45s)
+  4. Goblet Squat – 3 sets × 15 reps (rest 60s)
+  5. Battle Ropes – 3 sets × 30s (rest 60s)
+
+FRIDAY – HIIT Cardio (25 min)
+  1. Rowing Machine Sprints – 5 × 60s on / 60s off
+  2. Box Jumps – 4 sets × 10 reps (rest 60s)
+  3. Kettlebell Swing – 4 sets × 15 reps (rest 60s)
+  4. Sled Push – 4 sets × 20m (rest 90s)
+  5. Plank – 3 sets × 60s (rest 45s)
+
+SATURDAY – Light Walk or REST
+
+SUNDAY – REST`
+  },
+
+  'more energy': {
+    home: `MONDAY – Morning Activation (20 min)
+  1. Sun Salutation Flow – 3 rounds (rest 30s)
+  2. Jumping Jacks – 3 sets × 30 reps (rest 30s)
+  3. Bodyweight Squats – 3 sets × 15 reps (rest 30s)
+  4. Push-Ups – 3 sets × 10 reps (rest 30s)
+  5. Cat-Cow Stretch – 2 min continuous
+
+TUESDAY – Cardio Endurance
+  1. Brisk Walk or Jog – 20 min outdoors
+  2. High Knees – 3 sets × 30s (rest 30s)
+  3. Lateral Shuffles – 3 sets × 30s (rest 30s)
+  4. Box Breathing + Stretching – 10 min
+
+WEDNESDAY – REST & Recovery
+
+THURSDAY – Full Body Flow
+  1. Inchworm + Push-Up – 3 sets × 8 reps (rest 45s)
+  2. Reverse Lunges – 3 sets × 10 each (rest 30s)
+  3. Glute Bridge – 3 sets × 20 reps (rest 30s)
+  4. Plank Hold – 3 sets × 30s (rest 30s)
+  5. Child's Pose + Hip Stretch – 5 min
+
+FRIDAY – Energy Circuit
+  1. Jump Jacks – 3 sets × 30 reps (rest 30s)
+  2. Squat Pulses – 3 sets × 20 reps (rest 30s)
+  3. Push-Up Hold (bottom) – 3 sets × 10s (rest 30s)
+  4. Mountain Climbers – 3 sets × 20 reps (rest 30s)
+  5. Superman – 3 sets × 12 reps (rest 30s)
+
+SATURDAY – Outdoor Walk 30–40 min / Yoga
+
+SUNDAY – REST`,
+
+    dumbbells: `MONDAY – Full Body Energizer
+  1. Dumbbell Deadlift – 3 sets × 12 reps (rest 60s)
+  2. Goblet Squat – 3 sets × 15 reps (rest 60s)
+  3. Dumbbell Press (floor) – 3 sets × 12 reps (rest 60s)
+  4. Dumbbell Row – 3 sets × 12 each (rest 60s)
+  5. Bicycle Crunch – 3 sets × 15 reps (rest 30s)
+
+TUESDAY – Cardio + Mobility
+  1. Brisk Walk/Jog – 20 min
+  2. Hip Circles – 2 min each side
+  3. Thoracic Rotations – 3 sets × 10 each
+  4. Leg Swings – 2 min each
+
+WEDNESDAY – REST
+
+THURSDAY – Strength Circuit
+  1. Squat + Press – 3 sets × 12 reps (rest 60s)
+  2. Lunge + Curl – 3 sets × 10 each (rest 60s)
+  3. Reverse Fly – 3 sets × 15 reps (rest 45s)
+  4. Romanian Deadlift – 3 sets × 12 reps (rest 75s)
+  5. Russian Twist – 3 sets × 15 reps (rest 30s)
+
+FRIDAY – Light HIIT (20 min)
+  1. Dumbbell Swing – 3 sets × 20 reps (rest 45s)
+  2. Step-Up + Curl – 3 sets × 10 each (rest 60s)
+  3. Push-Ups – 3 sets × 12 reps (rest 45s)
+  4. Plank Hold – 3 sets × 40s (rest 30s)
+  5. Jumping Jacks – 3 sets × 30 reps (rest 30s)
+
+SATURDAY – Walk or Stretch
+
+SUNDAY – REST`,
+
+    gym: `MONDAY – Aerobic Foundation
+  1. Treadmill Easy Run – 20 min (zone 2)
+  2. Leg Press – 3 sets × 15 reps (rest 60s)
+  3. Seated Row – 3 sets × 15 reps (rest 60s)
+  4. Chest Press Machine – 3 sets × 15 reps (rest 60s)
+  5. Plank – 3 sets × 45s (rest 30s)
+
+TUESDAY – Mobility + Light Strength
+  1. Foam Rolling – 10 min full body
+  2. Goblet Squat – 3 sets × 15 reps (rest 60s)
+  3. Dumbbell Row – 3 sets × 12 each (rest 60s)
+  4. Lateral Raises – 3 sets × 15 reps (rest 45s)
+  5. Stretching Routine – 10 min
+
+WEDNESDAY – REST
+
+THURSDAY – Cardio + Core
+  1. Cycling Machine – 20 min moderate
+  2. Cable Crunch – 3 sets × 15 reps (rest 45s)
+  3. Hanging Leg Raise – 3 sets × 12 reps (rest 45s)
+  4. Plank Variations – 3 × 45s (rest 30s)
+  5. Dead Bug – 3 sets × 10 each (rest 30s)
+
+FRIDAY – Full Body Power
+  1. Barbell Deadlift – 3 sets × 8 reps (rest 90s)
+  2. Overhead Press – 3 sets × 10 reps (rest 75s)
+  3. Pull-Ups or Lat Pulldown – 3 sets × 10 reps (rest 75s)
+  4. Squat – 3 sets × 12 reps (rest 75s)
+  5. Battle Ropes – 3 sets × 20s (rest 60s)
+
+SATURDAY – Walk or Yoga
+
+SUNDAY – REST`
+  },
+
+  'get stronger': {
+    home: `MONDAY – Push Strength
+  1. Push-Up Progressions – 5 sets × max reps (rest 90s)
+  2. Pike Push-Ups – 4 sets × 10 reps (rest 90s)
+  3. Archer Push-Ups – 3 sets × 6 each (rest 90s)
+  4. Tricep Dips (chair) – 4 sets × 15 reps (rest 75s)
+  5. Plank Hold – 4 sets × 60s (rest 60s)
+
+TUESDAY – Pull Strength
+  1. Doorframe Rows – 5 sets × max reps (rest 90s)
+  2. Inverted Row (table) – 4 sets × 10 reps (rest 90s)
+  3. Towel Pull – 3 sets × 12 reps (rest 75s)
+  4. Superman Hold – 4 sets × 30s (rest 60s)
+  5. Band Pull-Apart (towel) – 3 sets × 20 reps (rest 45s)
+
+WEDNESDAY – REST
+
+THURSDAY – Lower Body Strength
+  1. Pistol Squat Progression – 5 sets × 5 each (rest 2min)
+  2. Bulgarian Split Squat – 4 sets × 10 each (rest 90s)
+  3. Nordic Curl – 3 sets × 5 reps (rest 2min)
+  4. Single Leg Glute Bridge – 4 sets × 12 each (rest 60s)
+  5. Calf Raises (single leg) – 3 sets × 20 each (rest 45s)
+
+FRIDAY – Full Body Power
+  1. Clap Push-Ups – 4 sets × 6 reps (rest 90s)
+  2. Jump Squats (slow down) – 4 sets × 8 reps (rest 90s)
+  3. Handstand Hold (wall) – 3 sets × 20s (rest 90s)
+  4. Plank to Push-Up – 3 sets × 10 reps (rest 75s)
+  5. L-Sit Hold (chairs) – 3 sets × 10s (rest 60s)
+
+SATURDAY – Light Mobility Work
+
+SUNDAY – REST`,
+
+    dumbbells: `MONDAY – Heavy Upper Push
+  1. Dumbbell Press (floor) – 5 sets × 6 reps (rest 2min)
+  2. Incline Push-Up + Dumbbells – 4 sets × 8 reps (rest 90s)
+  3. Overhead Press – 4 sets × 8 reps (rest 90s)
+  4. Tricep Overhead Extension – 4 sets × 10 reps (rest 75s)
+  5. Lateral Raises – 3 sets × 12 reps (rest 60s)
+
+TUESDAY – Heavy Upper Pull
+  1. Dumbbell Row – 5 sets × 6 each (rest 2min)
+  2. Dumbbell Deadlift – 4 sets × 8 reps (rest 90s)
+  3. Reverse Fly – 3 sets × 15 reps (rest 60s)
+  4. Dumbbell Curl – 4 sets × 10 reps (rest 75s)
+  5. Hammer Curl – 3 sets × 12 reps (rest 60s)
+
+WEDNESDAY – REST
+
+THURSDAY – Heavy Lower Body
+  1. Goblet Squat (heavy) – 5 sets × 8 reps (rest 2min)
+  2. Romanian Deadlift – 5 sets × 8 reps (rest 90s)
+  3. Bulgarian Split Squat – 4 sets × 8 each (rest 90s)
+  4. Single Leg Deadlift – 3 sets × 10 each (rest 75s)
+  5. Calf Raises (heavy) – 4 sets × 15 reps (rest 45s)
+
+FRIDAY – Power & Core
+  1. Dumbbell Thruster – 4 sets × 8 reps (rest 90s)
+  2. Dumbbell Swing – 4 sets × 15 reps (rest 75s)
+  3. Renegade Row – 4 sets × 8 each (rest 90s)
+  4. Farmers Walk – 3 sets × 30m (rest 90s)
+  5. Plank Hold – 4 sets × 60s (rest 60s)
+
+SATURDAY – Mobility & Recovery
+
+SUNDAY – REST`,
+
+    gym: `MONDAY – Bench Focus
+  1. Barbell Bench Press – 5 sets × 5 reps (rest 3min)
+  2. Incline Barbell Press – 4 sets × 6 reps (rest 2min)
+  3. Weighted Dips – 4 sets × 8 reps (rest 90s)
+  4. Tricep Pushdown – 4 sets × 12 reps (rest 75s)
+  5. Cable Fly – 3 sets × 15 reps (rest 60s)
+
+TUESDAY – Deadlift Focus
+  1. Barbell Deadlift – 5 sets × 5 reps (rest 3min)
+  2. Weighted Pull-Ups – 4 sets × 5 reps (rest 2min)
+  3. Barbell Row – 4 sets × 6 reps (rest 90s)
+  4. Barbell Curl – 3 sets × 10 reps (rest 75s)
+  5. Face Pulls – 3 sets × 15 reps (rest 60s)
+
+WEDNESDAY – REST / Light Cardio
+
+THURSDAY – Squat Focus
+  1. Barbell Squat – 5 sets × 5 reps (rest 3min)
+  2. Front Squat – 3 sets × 5 reps (rest 2min)
+  3. Leg Press – 4 sets × 10 reps (rest 90s)
+  4. Leg Curl – 3 sets × 12 reps (rest 75s)
+  5. Calf Raises – 4 sets × 20 reps (rest 45s)
+
+FRIDAY – Overhead & Core
+  1. Overhead Press – 5 sets × 5 reps (rest 3min)
+  2. Push Press – 4 sets × 5 reps (rest 2min)
+  3. Weighted Plank – 3 sets × 60s (rest 60s)
+  4. Ab Wheel Rollout – 3 sets × 10 reps (rest 60s)
+  5. Hanging Leg Raise – 3 sets × 12 reps (rest 60s)
+
+SATURDAY – Mobility / REST
+
+SUNDAY – REST`
+  }
+};
+
+// ─── MEAL PLANS ────────────────────────────────────────────────────────────
+
+function getMealPlan(goal, kcal, prot) {
+  const isLose = goal === 'lose weight';
+  const isBuild = goal === 'build muscle';
+  const isStrong = goal === 'get stronger';
+  const isEnergy = goal === 'more energy';
+
+  const carbs = isLose
+    ? Math.round((kcal * 0.35) / 4)
+    : isBuild || isStrong
+    ? Math.round((kcal * 0.45) / 4)
+    : Math.round((kcal * 0.40) / 4);
+
+  const fat = Math.round((kcal - prot * 4 - carbs * 4) / 9);
+
+  if (isLose) {
+    return {carbs, fat, plan:`MONDAY
+  Breakfast: 3 scrambled eggs + 100g cottage cheese + 1 apple
+  Lunch:     200g grilled chicken breast + large salad + 1 tbsp olive oil dressing
+  Dinner:    150g salmon + 200g roasted broccoli + 1 small sweet potato
+  Snack:     Greek yogurt (150g) + a handful of almonds
+
+TUESDAY
+  Breakfast: Oatmeal (60g) + 1 scoop protein powder + ½ banana + blueberries
+  Lunch:     Turkey lettuce wraps (200g turkey, lettuce, cucumber, mustard)
+  Dinner:    200g lean beef stir-fry + 150g mixed vegetables + 80g rice
+  Snack:     2 boiled eggs + carrot sticks
+
+WEDNESDAY
+  Breakfast: Smoothie: 1 banana + 1 scoop protein + 200ml oat milk + spinach handful
+  Lunch:     Large tuna salad (140g tuna, leafy greens, tomato, lemon dressing)
+  Dinner:    200g chicken thigh (baked) + 250g steamed broccoli + cauliflower
+  Snack:     150g cottage cheese + cucumber slices
+
+THURSDAY
+  Breakfast: 3 eggs omelette + mushrooms + spinach + 1 slice rye toast
+  Lunch:     200g shrimp + quinoa (100g cooked) + cucumber + feta
+  Dinner:    200g cod fillet (baked) + 300g roasted vegetables + ½ sweet potato
+  Snack:     Apple + 1 tbsp almond butter
+
+FRIDAY
+  Breakfast: Overnight oats (60g oats + Greek yogurt + berries) + 1 boiled egg
+  Lunch:     Chicken caesar salad (200g chicken, romaine, parmesan, light dressing)
+  Dinner:    200g turkey mince + zucchini noodles + tomato sauce
+  Snack:     Protein shake + 10 almonds
+
+SATURDAY
+  Breakfast: Veggie egg scramble (3 eggs, bell pepper, onion, spinach) + coffee
+  Lunch:     Salmon bowl (150g salmon, brown rice 100g cooked, avocado ¼, edamame)
+  Dinner:    200g grilled chicken + 300g roasted Brussels sprouts + side salad
+  Snack:     Greek yogurt + flaxseeds + small handful of walnuts
+
+SUNDAY
+  Breakfast: Protein pancakes (2 eggs + 1 banana + 30g oats, blend & pan-fry)
+  Lunch:     Large mixed salad + 150g grilled tuna + 1 boiled egg + olive oil
+  Dinner:    200g beef tenderloin (lean) + 200g asparagus + small portion mashed potato
+  Snack:     Cottage cheese + cucumber + herbs`}
+  }
+
+  if (isBuild || isStrong) {
+    return {carbs, fat, plan:`MONDAY
+  Breakfast: 4 scrambled eggs + 100g oats + banana + 1 tbsp peanut butter
+  Lunch:     300g chicken breast + 200g cooked rice + roasted broccoli + olive oil
+  Dinner:    200g salmon + 250g sweet potato + green salad
+  Snack:     Protein shake (2 scoops) + 50g mixed nuts
+
+TUESDAY
+  Breakfast: Protein pancakes (3 eggs + 80g oats + protein scoop) + maple syrup
+  Lunch:     300g beef mince stir-fry + 200g noodles + mixed vegetables
+  Dinner:    250g chicken thighs + 200g quinoa + steamed vegetables
+  Snack:     4 rice cakes + cottage cheese (200g) + honey
+
+WEDNESDAY
+  Breakfast: Smoothie: 2 bananas + 2 scoops protein + oat milk + peanut butter
+  Lunch:     250g turkey breast + baked potato (large) + side salad
+  Dinner:    200g pork loin + 180g cooked pasta + tomato sauce
+  Snack:     Greek yogurt (200g) + granola + berries
+
+THURSDAY
+  Breakfast: 4 eggs (any style) + 2 slices whole-grain toast + avocado
+  Lunch:     300g chicken + 250g cooked rice + spinach + olive oil
+  Dinner:    200g salmon + 250g sweet potato mash + green beans
+  Snack:     Protein shake + banana + almond butter
+
+FRIDAY
+  Breakfast: Overnight oats (100g oats + 200g yogurt + banana + honey)
+  Lunch:     300g lean beef + 200g rice + 150g broccoli
+  Dinner:    250g chicken breast + 200g pasta + cream sauce (light)
+  Snack:     200g cottage cheese + 50g granola + apple
+
+SATURDAY
+  Breakfast: 5-egg omelette + cheese + vegetables + 2 slices toast
+  Lunch:     Large burrito bowl (300g beef, rice, beans, salsa, sour cream)
+  Dinner:    250g salmon + 200g rice + roasted asparagus
+  Snack:     Mass gainer shake OR 200g Greek yogurt + nuts
+
+SUNDAY
+  Breakfast: French toast (3 slices bread, 3 eggs, cinnamon) + protein shake
+  Lunch:     Chicken burger (300g patty + whole-grain bun + salad)
+  Dinner:    Beef steak (200g) + large baked potato + butter + side salad
+  Snack:     2 boiled eggs + 50g mixed nuts + banana`}
+  }
+
+  // Energy
+  return {carbs, fat, plan:`MONDAY
+  Breakfast: Oatmeal (70g) + berries + honey + green tea
+  Lunch:     200g grilled chicken + quinoa (150g cooked) + spinach + lemon dressing
+  Dinner:    180g salmon + 150g sweet potato + steamed broccoli
+  Snack:     Apple + 20g almonds + herbal tea
+
+TUESDAY
+  Breakfast: Smoothie: spinach + banana + mango + ginger + coconut water
+  Lunch:     Turkey & avocado wrap + side salad + orange
+  Dinner:    200g cod + brown rice (150g cooked) + stir-fried vegetables
+  Snack:     Greek yogurt + granola + blueberries
+
+WEDNESDAY
+  Breakfast: 3 eggs on rye toast + avocado + tomato + coffee
+  Lunch:     Large grain bowl (quinoa, roasted veg, feta, chickpeas, tahini)
+  Dinner:    200g chicken + roasted sweet potato + green beans
+  Snack:     Handful of mixed nuts + banana
+
+THURSDAY
+  Breakfast: Overnight oats + chia seeds + berries + almond milk
+  Lunch:     Salmon salad (150g salmon, leafy greens, cucumber, walnuts, lemon)
+  Dinner:    200g turkey breast + 150g brown rice + roasted zucchini
+  Snack:     Carrot + hummus + green tea
+
+FRIDAY
+  Breakfast: Protein smoothie bowl (blend + toppings: granola, banana, seeds)
+  Lunch:     Chicken rice bowl + avocado + edamame + sesame dressing
+  Dinner:    200g shrimp + quinoa (150g) + roasted bell peppers
+  Snack:     Apple + almond butter + herbal tea
+
+SATURDAY
+  Breakfast: Veggie omelette (3 eggs, mushrooms, pepper, spinach) + rye toast
+  Lunch:     Lentil soup (large bowl) + whole-grain bread
+  Dinner:    200g salmon + large salad + olive oil dressing
+  Snack:     Greek yogurt + berries + honey
+
+SUNDAY
+  Breakfast: Acai bowl or smoothie bowl + mixed toppings
+  Lunch:     Buddha bowl (roasted veg, chickpeas, tahini, quinoa, greens)
+  Dinner:    200g grilled chicken + brown rice + broccoli + ginger soy sauce
+  Snack:     Mixed nuts + dark chocolate (2 squares)`}
+  }
+}
+
+// ─── GROCERY LIST ──────────────────────────────────────────────────────────
+
+function getGroceryList(goal) {
+  const isLose = goal === 'lose weight';
+  const isBuild = goal === 'build muscle' || goal === 'get stronger';
+
+  if (isLose) return `Protein:     Chicken breast, eggs, canned tuna, salmon, cottage cheese, Greek yogurt, turkey mince
+Carbs:       Oats, sweet potato, brown rice (small), rye bread, quinoa
+Vegetables:  Broccoli, spinach, mixed salad, cucumber, cherry tomatoes, bell peppers, zucchini
+Fats:        Almonds, olive oil, almond butter
+Other:       Greek yogurt, protein powder (optional), lemons, herbs & spices, mustard`;
+
+  if (isBuild) return `Protein:     Chicken breast, chicken thighs, lean beef mince, salmon, pork loin, eggs, cottage cheese, Greek yogurt, protein powder
+Carbs:       Oats, white rice, brown rice, sweet potato, pasta, quinoa, bananas, bread
+Vegetables:  Broccoli, spinach, mixed salad, asparagus, green beans, Brussels sprouts
+Fats:        Mixed nuts, peanut butter, olive oil, avocado
+Other:       Honey, granola, rice cakes, maple syrup, parmesan`;
+
+  return `Protein:     Chicken breast, salmon, cod, eggs, turkey breast, Greek yogurt, lentils, chickpeas
+Carbs:       Oats, quinoa, brown rice, sweet potato, rye bread, bananas, mango
+Vegetables:  Spinach, broccoli, bell peppers, zucchini, mushrooms, mixed salad, edamame
+Fats:        Almonds, walnuts, olive oil, avocado, almond butter, chia seeds
+Other:       Ginger, green tea, herbal teas, lemon, tahini, dark chocolate`;
+}
+
+// ─── 3 RULES ───────────────────────────────────────────────────────────────
+
+function getRules(goal, prot, kcal) {
+  if (goal === 'build muscle') return `Rule 1: Hit your protein target – every single day.
+    You need ${prot}g of protein daily to build muscle. No protein = no growth. Prioritize
+    chicken, eggs, and Greek yogurt at every meal. Don't rely on supplements first.
+
+Rule 2: Eat enough to grow – don't be afraid of calories.
+    Your target is ${kcal} kcal/day. Eating too little is the #1 reason people train hard
+    but don't grow. Weigh your food for the first 2 weeks to calibrate your eye.
+
+Rule 3: Overload every week.
+    Add weight, reps, or sets every single week. Even just 1 extra rep counts. Progress
+    is the only thing that forces your body to build new muscle. Track every session.`;
+
+  if (goal === 'lose weight') return `Rule 1: Stick to your calorie target – not below, not far above.
+    ${kcal} kcal/day is your sweet spot. Too low = muscle loss + fatigue. Too high = no
+    progress. Use a free app like Cronometer to log food until you can estimate by eye.
+
+Rule 2: Protein protects your muscle.
+    Hit ${prot}g/day of protein even while cutting. This keeps your body burning fat –
+    not muscle. Eggs, chicken, and cottage cheese are your best friends.
+
+Rule 3: Walk every day.
+    Add 7,000–10,000 steps daily. This alone can burn 300–500 extra kcal without touching
+    your workouts or hunger levels. It's the most underrated fat loss tool.`;
+
+  if (goal === 'more energy') return `Rule 1: Eat regularly – skip no meals.
+    Your body runs on fuel. Skipping meals spikes cortisol, crashes blood sugar and kills
+    energy. Eat breakfast within 1 hour of waking and never go more than 5 hours without food.
+
+Rule 2: Prioritize sleep above everything.
+    No supplement, diet or workout beats 7–9 hours of quality sleep. Go to bed at the same
+    time every night. Poor sleep is the #1 energy thief – fix this first.
+
+Rule 3: Limit sugar and ultra-processed food.
+    Energy crashes come from blood sugar spikes. Eat complex carbs (oats, sweet potato,
+    quinoa) and pair every carb with protein or fat to keep energy stable all day.`;
+
+  if (goal === 'get stronger') return `Rule 1: Master the basics before going heavy.
+    Bench, squat, deadlift, overhead press. These four movements build more strength than
+    any machine. Learn the correct form first – video yourself, get feedback.
+
+Rule 2: Rest long enough between heavy sets.
+    Strength is a nervous system skill. Heavy compound lifts need 2–3 minutes of rest.
+    Rushing kills your performance and stops progress. Rest is not laziness – it's strategy.
+
+Rule 3: Eat enough to support maximum strength.
+    You cannot get stronger in a big calorie deficit. Aim for ${kcal} kcal/day and
+    ${prot}g protein. Strength athletes who under-eat stall out fast. Fuel the effort.`;
+
+  return '';
+}
+
+// ─── WEEKS 5–8 ─────────────────────────────────────────────────────────────
+
+function getProgression(goal, kcal) {
+  if (goal === 'build muscle') return `Training:    Add 2.5–5 kg to all compound lifts per week. If you can't, increase reps first.
+             Introduce drop sets on your last exercise each session.
+Nutrition:   If you gained less than 0.5 kg in Week 4, add 150–200 kcal (more carbs/rice).
+             Consider a higher-protein day (training days: +20g protein).
+Schedule:    You can now try a 5-day split or add a second session for lagging muscles.`;
+
+  if (goal === 'lose weight') return `Training:    Add 1 extra HIIT session or increase cardio to 35 min. Increase weights by 5–10%.
+             Try supersets (two exercises back-to-back) to increase calorie burn.
+Nutrition:   If weight loss stalls (no change for 2 weeks), reduce calories by 100–150 kcal.
+             Add a "refeed day" on your hardest training day – eat at maintenance ${kcal + 400} kcal.
+Habits:      Aim for 9,000+ steps daily. Consider intermittent fasting (16:8) if it fits your lifestyle.`;
+
+  if (goal === 'more energy') return `Training:    Increase session length by 5–10 min. Add a 6th day if energy allows.
+             Introduce progressive overload – add weight to exercises that feel easy.
+Nutrition:   Track how food affects your energy. Note your highest-energy days and replicate them.
+             Consider adding a pre-workout meal of oats + banana 60–90 min before training.
+Recovery:    Add 10 min of morning stretching or yoga to your routine. Protect your sleep hours.`;
+
+  if (goal === 'get stronger') return `Training:    Transition to a heavier loading scheme: 5×3 or 5×2 on main lifts.
+             Add 1 accessory movement per session that targets your weakest link.
+Nutrition:   Ensure you're at or above ${kcal} kcal on training days. Strength is fuelled by carbs.
+             Add creatine monohydrate (5g/day) – it is the most evidence-based strength supplement.
+Tracking:    Log every lift. Celebrate PRs. Strength progress compounds over months, stay consistent.`;
+
+  return '';
+}
+
+// ─── MAIN GENERATE ─────────────────────────────────────────────────────────
+
+function generate() {
+  if (!goal) { alert('Please select a goal!'); return; }
+  const w = parseFloat(document.getElementById('weight').value);
+  const h = parseFloat(document.getElementById('height').value);
+  const a = parseFloat(document.getElementById('age').value);
+  if (!w || !h || !a) { alert('Please fill in weight, height and age!'); return; }
+
+  const g = document.getElementById('gender').value;
+  const lv = document.getElementById('level').value;
+  const eq = document.getElementById('equipment').value;
+
+  // Mifflin-St Jeor BMR
+  const bmr = g === 'male' ? 10 * w + 6.25 * h - 5 * a + 5 : 10 * w + 6.25 * h - 5 * a - 161;
+  const mult = { sedentary: 1.2, light: 1.375, moderate: 1.55, active: 1.725 }[lv] || 1.375;
+  const tdee = Math.round(bmr * mult);
+  const kcal = goal === 'lose weight' ? tdee - 400 : (goal === 'build muscle' || goal === 'get stronger') ? tdee + 300 : tdee;
+  const prot = Math.round(w * (goal === 'lose weight' ? 2.2 : 2.0));
+
+  document.getElementById('form-view').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+
+  const steps = [
+    [20, 'Calculating your calorie needs...'],
+    [45, 'Building your training program...'],
+    [68, 'Creating your meal plan...'],
+    [88, 'Putting it all together...']
+  ];
+  let i = 0;
+  const iv = setInterval(() => { if (i < steps.length) setLoad(...steps[i++]); }, 700);
+
+  setTimeout(() => {
+    clearInterval(iv);
+    setLoad(100, 'Done!');
+
+    // Pick training plan
+    const eqKey = eq === 'home' ? 'home' : eq === 'dumbbells' ? 'dumbbells' : 'gym';
+    const trainingPlan = training[goal]?.[eqKey] || training['build muscle']['gym'];
+
+    // Get meal plan data
+    const mealData = getMealPlan(goal, kcal, prot);
+    const groceryList = getGroceryList(goal);
+    const rules = getRules(goal, prot, kcal);
+    const progression = getProgression(goal, kcal);
+
+    // Why this plan
+    const whyMap = {
+      'build muscle': `You need a caloric surplus and high protein to grow. At ${kcal} kcal and ${prot}g protein per day, your body has the raw materials to build new muscle tissue with every session you complete.`,
+      'lose weight': `A ${tdee - kcal} kcal daily deficit puts you on track to lose ~0.5 kg per week – fast enough to see results, slow enough to keep your muscle and energy levels intact.`,
+      'more energy': `At ${kcal} kcal/day with balanced macros, you'll fuel your brain and body consistently throughout the day – ending the afternoon crashes and morning sluggishness for good.`,
+      'get stronger': `Eating at ${kcal} kcal ensures your muscles recover fully between sessions. Combined with progressive overload, this is the exact environment your nervous system needs to get stronger week after week.`
+    };
+
+    const goalLabel = goal.charAt(0).toUpperCase() + goal.slice(1);
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    const planText =
+`═══════════════════════════════════════════════════
+  TRANSFORM – YOUR COMPLETE PERSONAL PLAN
+═══════════════════════════════════════════════════
+  Goal: ${goalLabel}  |  Created: ${today}
+
+WHY THIS PLAN WORKS FOR YOU
+───────────────────────────────────────────────────
+${whyMap[goal]}
+
+───────────────────────────────────────────────────
+YOUR DAILY TARGETS
+───────────────────────────────────────────────────
+  Calories:  ${kcal} kcal/day
+  Protein:   ${prot}g   |   Carbs: ${mealData.carbs}g   |   Fat: ${mealData.fat}g
+  Your BMR:  ${Math.round(bmr)} kcal   |   TDEE: ${tdee} kcal
+  Gender: ${g}  |  Age: ${a}  |  Weight: ${w}kg  |  Height: ${h}cm
+  Activity:  ${lv}  |  Equipment: ${eqKey}
+
+───────────────────────────────────────────────────
+4-WEEK TRAINING PROGRAM
+───────────────────────────────────────────────────
+Equipment: ${eqKey === 'home' ? 'Home – no equipment' : eqKey === 'dumbbells' ? 'Home with dumbbells' : 'Gym'}
+Note: Repeat this week's schedule for all 4 weeks.
+      Increase intensity each week (see Weeks 5–8).
+
+${trainingPlan}
+
+───────────────────────────────────────────────────
+7-DAY MEAL PLAN (~${kcal} kcal/day)
+───────────────────────────────────────────────────
+${mealData.plan}
+
+───────────────────────────────────────────────────
+WEEKLY GROCERY LIST
+───────────────────────────────────────────────────
+${groceryList}
+
+───────────────────────────────────────────────────
+YOUR 3 RULES
+───────────────────────────────────────────────────
+${rules}
+
+───────────────────────────────────────────────────
+WEEKS 5–8: WHAT'S NEXT
+───────────────────────────────────────────────────
+${progression}
+
+═══════════════════════════════════════════════════
+  Created by Transform · NordicPlans.net
+  Your plan is personal – keep this file safe.
+═══════════════════════════════════════════════════`;
+
+    generatedPlan = planText;
+
+    setTimeout(() => {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('preview').textContent = planText;
+    }, 400);
+  }, 3200);
+}
+
+function downloadPlan() {
+  const blob = new Blob([generatedPlan], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Transform_MyPlan.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function restart() {
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('form-view').style.display = 'block';
+  goal = '';
+  generatedPlan = '';
+  document.querySelectorAll('.goal-btn').forEach(b => b.classList.remove('sel'));
+}
+</script>
+</body>
+</html>
